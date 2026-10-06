@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Modern Style Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14141a;
+    --ink-soft:#3c3a3f;
+    --paper:#f1ebde;
+    --paper-dim:#e6ddc9;
+    --brass:#a9782f;
+    --brass-soft:#c79a52;
+    --bottle:#33463a;
+    --line:rgba(20,20,26,.14);
+    --line-on-ink:rgba(241,235,222,.16);
+    --shadow:0 18px 40px -20px rgba(20,20,26,.35);
+    --radius:2px;
+    --serif:'Fraunces',serif;
+    --sans:'IBM Plex Sans',sans-serif;
+    --pad-top:env(safe-area-inset-top,0px);
+    --pad-bottom:env(safe-area-inset-bottom,0px);
+    box-sizing:border-box;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --paper:#efe9db; } }
+  :root[data-theme="dark"]{ --paper:#efe9db; }
+  *,*::before,*::after{box-sizing:inherit;}
+  html{scroll-padding-top:var(--pad-top); scroll-behavior:smooth;}
+  html,body{height:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.55;
+    padding-top:var(--pad-top); padding-bottom:var(--pad-bottom);
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{max-width:100%;}
+  h1,h2,h3,h4{font-family:var(--serif); font-weight:500; margin:0; letter-spacing:-.01em;}
+  p{margin:0 0 .8em; max-width:62ch;}
+  button{font-family:var(--sans); cursor:pointer;}
+  a{color:inherit;}
+  .hide{display:none !important;}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+  ::selection{background:var(--brass); color:var(--paper);}
+
+  /* ---------- Landing ---------- */
+  #view-landing{
+    min-height:100vh; background:var(--ink); color:var(--paper);
+    position:relative; overflow:hidden;
+    display:flex; flex-direction:column; justify-content:space-between;
+    padding:calc(28px + var(--pad-top)) 0 calc(28px + var(--pad-bottom));
+  }
+  #view-landing::before{
+    content:""; position:absolute; inset:0; opacity:.05; pointer-events:none;
+    background-image:radial-gradient(circle at 1px 1px, #fff 1px, transparent 0);
+    background-size:3px 3px;
+  }
+  .landing-mark{ font-family:var(--serif); font-weight:300; font-size:clamp(3.2rem,9vw,7.5rem); line-height:.92; letter-spacing:-.02em; margin:0 0 .2em;}
+  .landing-mark em{font-style:italic; color:var(--brass-soft);}
+  .landing-top{ position:relative; z-index:1;}
+  .landing-num{font-size:.78rem; letter-spacing:.04em; color:var(--brass-soft); font-family:var(--sans); margin-bottom:18px;}
+  .landing-sub{max-width:44ch; color:rgba(241,235,222,.78); font-size:1.05rem;}
+  .landing-bottom{position:relative; z-index:1; display:flex; gap:48px; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;}
+  .landing-manifesto{max-width:38ch; font-size:.98rem; color:rgba(241,235,222,.7); border-left:1px solid var(--line-on-ink); padding-left:20px;}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px; background:var(--brass); color:var(--ink);
+    border:none; padding:15px 26px; font-size:.95rem; font-weight:600; border-radius:var(--radius);
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn:hover{background:var(--brass-soft); transform:translateY(-1px);}
+  .btn:focus-visible{outline:2px solid var(--brass-soft); outline-offset:3px;}
+  .btn.ghost{background:transparent; border:1px solid var(--line-on-ink); color:var(--paper);}
+  .btn.ghost:hover{border-color:var(--brass-soft); background:transparent;}
+  .btn.dark{background:var(--ink); color:var(--paper);}
+  .btn.dark:hover{background:#26262e;}
+  .btn.small{padding:9px 16px; font-size:.82rem;}
+  .btn:disabled{opacity:.35; cursor:not-allowed; transform:none;}
+
+  /* ---------- Onboarding form ---------- */
+  #onboard-panel{
+    position:fixed; inset:0; z-index:50; background:var(--ink); color:var(--paper);
+    display:flex; align-items:center; justify-content:center; padding:24px;
+    padding-top:calc(24px + var(--pad-top)); padding-bottom:calc(24px + var(--pad-bottom));
+  }
+  .onboard-card{ width:100%; max-width:560px;}
+  .onboard-step{display:none;}
+  .onboard-step.active{display:block; animation:rise .35s ease both;}
+  @keyframes rise{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+  .onboard-eyebrow{font-size:.78rem; color:var(--brass-soft); margin-bottom:10px;}
+  .onboard-card h2{font-size:clamp(1.5rem,4vw,2rem); margin-bottom:8px; font-weight:400;}
+  .onboard-card p.hint{color:rgba(241,235,222,.65); font-size:.92rem; margin-bottom:22px;}
+  .field{margin-bottom:22px;}
+  .field label{display:block; font-size:.85rem; color:rgba(241,235,222,.75); margin-bottom:8px;}
+  .field input[type=text]{
+    width:100%; background:transparent; border:none; border-bottom:1px solid var(--line-on-ink);
+    color:var(--paper); font-family:var(--serif); font-size:1.4rem; padding:6px 0; outline:none;
+  }
+  .field input[type=text]:focus{border-color:var(--brass-soft);}
+  .choice-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px;}
+  .choice{
+    border:1px solid var(--line-on-ink); padding:14px 16px; border-radius:var(--radius);
+    background:transparent; color:var(--paper); text-align:left; font-size:.9rem;
+  }
+  .choice:hover{border-color:var(--brass-soft);}
+  .choice.selected{border-color:var(--brass); background:rgba(169,120,47,.16);}
+  .onboard-nav{display:flex; justify-content:space-between; align-items:center; margin-top:28px;}
+  .onboard-dots{display:flex; gap:6px;}
+  .onboard-dots span{width:6px; height:6px; border-radius:50%; background:var(--line-on-ink);}
+  .onboard-dots span.on{background:var(--brass);}
+
+  /* ---------- App shell + sidebar ---------- */
+  #app{display:flex; align-items:flex-start; min-height:100vh;}
+  #app-sidebar{
+    width:252px; flex:0 0 252px; background:var(--ink); color:var(--paper);
+    position:sticky; top:var(--pad-top); height:100vh; overflow-y:auto; overflow-x:hidden;
+    display:flex; flex-direction:column; padding:30px 22px calc(24px + var(--pad-bottom));
+    z-index:30; transition:flex-basis .2s ease, width .2s ease, padding .2s ease;
+  }
+  #sidebar-toggle{
+    position:absolute; top:24px; right:14px; background:none; border:1px solid var(--line-on-ink);
+    color:rgba(241,235,222,.6); width:26px; height:26px; border-radius:50%; font-size:.9rem;
+    display:flex; align-items:center; justify-content:center; padding:0; line-height:1;
+  }
+  #sidebar-toggle:hover{color:var(--paper); border-color:var(--brass-soft);}
+  #app-sidebar.collapsed{width:70px; flex-basis:70px; padding-left:12px; padding-right:12px;}
+  #app-sidebar.collapsed .side-mark, #app-sidebar.collapsed .side-tagline,
+  #app-sidebar.collapsed .side-label, #app-sidebar.collapsed .side-desc,
+  #app-sidebar.collapsed #nav-name, #app-sidebar.collapsed #btn-restart{display:none;}
+  #app-sidebar.collapsed .side-nav button{text-align:center; padding:13px 4px;}
+  #app-sidebar.collapsed #sidebar-toggle{position:static; margin:0 auto 30px; transform:rotate(180deg);}
+  #app-sidebar.collapsed .side-foot{border-top:none; padding-top:0; margin-top:12px;}
+  #app-main{flex:1; min-width:0;}
+  .side-mark{font-family:var(--serif); font-size:1.05rem; letter-spacing:-.01em; margin-bottom:8px;}
+  .side-tagline{font-size:.74rem; color:rgba(241,235,222,.45); margin-bottom:34px;}
+  .side-nav{display:flex; flex-direction:column; gap:4px; margin-bottom:auto;}
+  .side-nav button{
+    text-align:left; background:none; border:none; border-left:2px solid transparent;
+    color:rgba(241,235,222,.68); padding:13px 14px; font-size:.87rem; border-radius:0;
+  }
+  .side-nav button .side-num{display:block; font-family:var(--serif); font-size:.72rem; color:var(--brass-soft); margin-bottom:3px; letter-spacing:.03em;}
+  .side-nav button .side-label{display:block; font-weight:500;}
+  .side-nav button .side-desc{display:block; font-size:.72rem; color:rgba(241,235,222,.42); margin-top:4px; line-height:1.4; font-weight:400;}
+  .side-nav button.active{border-left-color:var(--brass); color:var(--paper); background:rgba(241,235,222,.05);}
+  .side-nav button:hover{color:var(--paper);}
+  .side-foot{padding-top:22px; border-top:1px solid var(--line-on-ink); margin-top:26px; font-size:.8rem; color:rgba(241,235,222,.55);}
+  .side-foot button.link{background:none; border:none; color:rgba(241,235,222,.5); text-decoration:underline; font-size:.76rem; padding:6px 0 0; display:block;}
+  @media (max-width:900px){
+    #app{flex-direction:column;}
+    #sidebar-toggle{display:none;}
+    #app-sidebar{
+      position:sticky; top:var(--pad-top); width:100%; height:auto; flex-direction:row; align-items:center;
+      overflow-x:auto; padding:14px 16px; gap:22px; border-bottom:1px solid var(--line-on-ink);
+    }
+    .side-mark{margin-bottom:0; flex-shrink:0;}
+    .side-tagline{display:none;}
+    .side-nav{flex-direction:row; margin-bottom:0; flex:1;}
+    .side-nav button{padding:8px 12px; border-left:none; border-bottom:2px solid transparent; white-space:nowrap;}
+    .side-nav button .side-desc{display:none;}
+    .side-nav button.active{border-bottom-color:var(--brass); border-left:none;}
+    .side-foot{border-top:none; margin-top:0; padding-top:0; display:flex; align-items:center; gap:12px; flex-shrink:0;}
+    .side-foot button.link{padding:0;}
+  }
+
+  /* ---------- Home ---------- */
+  #view-home .wrap{padding-top:56px; padding-bottom:80px;}
+  .home-intro{max-width:64ch; margin-bottom:40px;}
+  .home-intro .eyebrow{font-size:.78rem; color:var(--brass); margin-bottom:10px;}
+  .home-intro h1{font-size:clamp(1.9rem,4.2vw,2.7rem); font-weight:400; margin-bottom:14px;}
+  .stat-chips{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:36px;}
+  .stat-chips span{border:1px solid var(--line); padding:8px 14px; font-size:.78rem; color:var(--ink-soft); border-radius:20px;}
+  .stat-chips span b{color:var(--ink);}
+  .journey-panel{border:1px solid var(--line); background:#faf7ef; padding:24px 28px; margin-bottom:40px;}
+  .journey-head{font-size:.72rem; letter-spacing:.03em; color:var(--brass); font-weight:600; margin-bottom:16px;}
+  .journey-rows{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  @media (max-width:700px){ .journey-rows{grid-template-columns:1fr;} }
+  .journey-row label{display:flex; justify-content:space-between; font-size:.84rem; color:var(--ink-soft); margin-bottom:8px;}
+  .journey-row label b{color:var(--ink);}
+  .journey-bar{height:5px; background:var(--line);}
+  .journey-bar-fill{height:100%; background:var(--brass);}
+  .modules{display:flex; flex-direction:column; gap:18px;}
+  .module-row{
+    display:grid; grid-template-columns:90px 1fr auto; align-items:center; gap:28px;
+    border:1px solid var(--line); padding:30px 30px; background:#faf7ef; border-radius:var(--radius);
+    transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+  }
+  .module-row:hover{border-color:var(--brass); box-shadow:var(--shadow); transform:translateY(-2px);}
+  .module-num{font-family:var(--serif); font-size:2.6rem; font-weight:300; color:var(--brass); line-height:1; position:relative;}
+  .module-num::after{content:""; position:absolute; left:0; bottom:-8px; width:22px; height:2px; background:var(--brass); opacity:.5;}
+  .module-body h3{font-size:1.35rem; font-weight:500; margin-bottom:6px;}
+  .module-body p{margin:0; color:var(--ink-soft); font-size:.95rem;}
+  .module-tag{font-size:.72rem; color:var(--brass); letter-spacing:.03em; margin-bottom:8px; display:block;}
+  @media (max-width:640px){ .module-row{grid-template-columns:1fr; text-align:left;} .module-num{font-size:2rem;} }
+
+  /* ---------- Section shells ---------- */
+  .section-hero{border-bottom:1px solid var(--line); padding:48px 0 34px; background:#faf7ef;}
+  .section-hero .eyebrow{font-size:.78rem; color:var(--brass); margin-bottom:10px;}
+  .section-hero h1{font-size:clamp(1.8rem,4vw,2.5rem); font-weight:400; margin-bottom:12px; position:relative; padding-bottom:16px;}
+  .section-hero h1::after{content:""; position:absolute; left:0; bottom:0; width:48px; height:2px; background:var(--brass);}
+  .section-hero p{color:var(--ink-soft); font-size:1rem;}
+  .section-hero p.lead2{margin-top:-.4em;}
+  .hero-chips{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;}
+  .hero-chips span{border:1px solid var(--line); padding:7px 13px; font-size:.76rem; color:var(--ink-soft); border-radius:20px; background:var(--paper);}
+
+  /* ---------- Codex quick-match ---------- */
+  .quickmatch{margin-top:26px; max-width:560px; border:1px solid var(--line); background:var(--paper); padding:20px 22px;}
+  .quickmatch h4{font-size:.72rem; letter-spacing:.03em; color:var(--brass); margin-bottom:14px; font-weight:600;}
+  .qm-row{margin-bottom:12px;}
+  .qm-row label{display:flex; justify-content:space-between; font-size:.83rem; color:var(--ink-soft); margin-bottom:6px;}
+  #qm-result{font-size:.9rem; margin-top:14px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  #qm-result-text{color:var(--ink-soft);}
+  #qm-result-text b{color:var(--ink); font-family:var(--serif); font-size:1.05rem;}
+
+  /* ---------- Codex (Module 1) ---------- */
+  #codex-layout{display:grid; grid-template-columns:230px 1fr; gap:0; align-items:start;}
+  #codex-toc{
+    position:sticky; top:calc(var(--pad-top) + 68px); border-right:1px solid var(--line);
+    padding:30px 20px 60px 0; height:calc(100vh - 68px); overflow-y:auto;
+  }
+  #codex-toc button{
+    display:block; width:100%; text-align:left; background:none; border:none; padding:9px 6px;
+    font-size:.86rem; color:var(--ink-soft); border-left:2px solid transparent; margin-bottom:2px;
+  }
+  #codex-toc button.active{color:var(--ink); font-weight:600; border-left-color:var(--brass);}
+  #codex-panels{padding:34px 34px 80px 40px;}
+  .archetype-panel{display:none;}
+  .archetype-panel.active{display:block; animation:rise .3s ease both;}
+  .archetype-head{display:flex; align-items:flex-start; gap:20px; margin-bottom:24px; flex-wrap:wrap;}
+  .archetype-head .arch-roman{font-family:var(--serif); font-size:1rem; color:var(--brass); border:1px solid var(--brass); width:38px; height:38px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .archetype-head h2{font-size:1.9rem; font-weight:500; margin-bottom:4px;}
+  .archetype-head .tagline{color:var(--ink-soft); font-style:italic; font-family:var(--serif); font-size:1.05rem;}
+  .palette-row{display:flex; gap:6px; margin:10px 0 26px;}
+  .swatch{width:26px; height:26px; border:1px solid var(--line);}
+  .arch-grid{display:grid; grid-template-columns:1fr 1fr; gap:26px 34px;}
+  @media (max-width:820px){ .arch-grid{grid-template-columns:1fr;} }
+  .arch-block h4{font-size:.72rem; letter-spacing:.03em; color:var(--brass); margin-bottom:8px; font-weight:600; font-family:var(--sans);}
+  .arch-block p{font-size:.92rem; color:var(--ink-soft); margin-bottom:0;}
+  .arch-block ul{margin:0; padding-left:18px; font-size:.92rem; color:var(--ink-soft);}
+  .arch-block li{margin-bottom:6px;}
+  .arch-block.full{grid-column:1 / -1;}
+  .quick-facts-row{display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 20px;}
+  .quick-facts-row span{border:1px solid var(--line); padding:7px 13px; font-size:.78rem; color:var(--ink-soft); border-radius:20px; background:var(--paper);}
+  .quick-facts-row span b{color:var(--ink); font-weight:600;}
+  .arch-block.icons p{font-style:italic; font-family:var(--serif); color:var(--ink-soft);}
+  .pill-list{display:flex; flex-wrap:wrap; gap:8px;}
+  .pill-list span{border:1px solid var(--line); padding:6px 12px; font-size:.82rem; color:var(--ink-soft); border-radius:20px;}
+  .mistake-list li::marker{color:#8a3b2e;}
+  .page-divider{border-top:1px solid var(--line); margin:40px 0 22px; padding-top:20px;}
+  .page-divider.first{margin-top:0; border-top:none; padding-top:0;}
+  .page-divider small{display:block; font-size:.7rem; letter-spacing:.04em; color:var(--brass); margin-bottom:4px;}
+  .page-divider b{font-family:var(--serif); font-size:1.15rem; font-weight:500;}
+  .fit-intro{color:var(--ink-soft); font-size:.92rem; margin-bottom:22px; max-width:60ch;}
+  .fit-sliders{display:grid; gap:16px; margin-bottom:20px; max-width:520px;}
+  .fit-slider-row label{display:flex; justify-content:space-between; font-size:.84rem; color:var(--ink-soft); margin-bottom:7px;}
+  .fit-slider-row label span:last-child{color:var(--ink); font-weight:600;}
+  .fit-verdict{font-size:.9rem; background:var(--paper-dim); border-left:2px solid var(--brass); padding:14px 16px; margin-bottom:28px; max-width:560px;}
+  .ebook-toggle{display:flex; gap:8px; margin-top:22px;}
+  .ebook-toggle button{background:none; border:1px solid var(--line); padding:9px 16px; font-size:.8rem; color:var(--ink-soft); border-radius:20px;}
+  .ebook-toggle button.active{border-color:var(--brass); color:var(--ink); background:rgba(169,120,47,.08);}
+  #codex-panels.scroll-all .archetype-panel{display:block !important; margin-bottom:70px; padding-bottom:50px; border-bottom:1px solid var(--line);}
+  #codex-panels.scroll-all .archetype-panel:last-child{border-bottom:none; margin-bottom:0;}
+  #codex-panels.scroll-all .chapter-nav{display:none;}
+  .chapter-nav{display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line); margin-top:40px; padding-top:24px;}
+  .chapter-nav button{background:none; border:1px solid var(--line); padding:12px 18px; font-size:.85rem; color:var(--ink-soft); max-width:46%; text-align:left;}
+  .chapter-nav button:hover{border-color:var(--brass); color:var(--ink);}
+  .chapter-nav button span{display:block; font-size:.7rem; color:var(--brass); margin-bottom:3px;}
+  .chapter-nav button.next{text-align:right; margin-left:auto;}
+  @media (max-width:900px){
+    #codex-layout{grid-template-columns:1fr;}
+    #codex-toc{position:static; height:auto; border-right:none; border-bottom:1px solid var(--line); padding:18px 0; display:flex; flex-wrap:wrap; gap:4px;}
+    #codex-toc button{width:auto; padding:6px 10px; border:1px solid var(--line); border-left:1px solid var(--line);}
+    #codex-toc button.active{border-color:var(--brass);}
+    #codex-panels{padding:28px 4px 60px;}
+  }
+
+  /* ---------- Framework (Module 2) ---------- */
+  #framework-tabs{display:flex; gap:4px; flex-wrap:wrap; border-bottom:1px solid var(--line); padding:0 0 0; background:#faf7ef;}
+  #framework-tabs .wrap{display:flex; gap:4px; flex-wrap:wrap; padding-top:0; padding-bottom:0;}
+  #framework-tabs button{
+    background:none; border:none; padding:16px 16px; font-size:.86rem; color:var(--ink-soft);
+    border-bottom:2px solid transparent;
+  }
+  #framework-tabs button.active{color:var(--ink); font-weight:600; border-bottom-color:var(--brass);}
+  .fw-panel{display:none; padding:44px 0 80px;}
+  .fw-panel.active{display:block; animation:rise .3s ease both;}
+  .fw-panel h2{font-size:1.6rem; font-weight:500; margin-bottom:8px;}
+  .fw-panel > .wrap > p.lead{color:var(--ink-soft); max-width:60ch; margin-bottom:34px;}
+  .card{background:#faf7ef; border:1px solid var(--line); border-radius:var(--radius); padding:26px; transition:box-shadow .2s ease, border-color .2s ease;}
+  .card:hover{box-shadow:var(--shadow); border-color:var(--brass-soft);}
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:26px;}
+  @media (max-width:760px){ .two-col{grid-template-columns:1fr;} }
+  .slider-row{margin-bottom:10px;}
+  .slider-row label{display:flex; justify-content:space-between; font-size:.85rem; color:var(--ink-soft); margin-bottom:8px;}
+  input[type=range]{width:100%; accent-color:var(--brass);}
+  #proportion-figure{display:flex; justify-content:center; margin:20px 0;}
+  #proportion-feedback{font-size:.9rem; color:var(--ink-soft); background:var(--paper-dim); padding:14px 16px; border-left:2px solid var(--brass);}
+  .wheel-wrap{display:flex; gap:30px; flex-wrap:wrap; align-items:center;}
+  #color-wheel path{cursor:pointer; stroke:var(--paper); stroke-width:2;}
+  #color-wheel path:hover{opacity:.85;}
+  .palette-output h4{font-size:.72rem; letter-spacing:.03em; color:var(--brass); margin:14px 0 6px;}
+  .palette-output .palette-row{margin:0 0 4px;}
+  .compat-table{width:100%; border-collapse:collapse; font-size:.88rem;}
+  .compat-table th,.compat-table td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  .compat-table th{font-size:.72rem; letter-spacing:.03em; color:var(--brass); font-weight:600;}
+  .compat-picker{display:flex; align-items:center; gap:14px; margin-bottom:16px;}
+  .compat-picker select{
+    flex:1; font-family:var(--sans); font-size:.9rem; padding:10px 12px; border:1px solid var(--line);
+    background:var(--paper); color:var(--ink); border-radius:var(--radius);
+  }
+  #compat-verdict{font-size:.9rem; color:var(--ink-soft); border-left:2px solid var(--brass); padding:12px 14px; background:var(--paper-dim);}
+  #compat-verdict b{color:var(--ink);}
+  .tag-ok{color:var(--bottle); font-weight:600;}
+  .tag-risk{color:#8a3b2e; font-weight:600;}
+  .capsule-cat{margin-bottom:26px;}
+  .capsule-cat h4{font-size:.85rem; margin-bottom:12px; color:var(--ink);}
+  .capsule-item{display:flex; align-items:center; gap:10px; padding:7px 0; font-size:.9rem; border-bottom:1px solid var(--line);}
+  .capsule-item input{accent-color:var(--brass); width:16px; height:16px;}
+  .capsule-item.checked span{color:var(--ink-soft); text-decoration:line-through;}
+  #capsule-meter{height:6px; background:var(--line); margin-bottom:30px; position:relative; overflow:hidden;}
+  #capsule-meter-fill{height:100%; background:var(--brass); width:0%; transition:width .3s ease;}
+  #capsule-meter-label{font-size:.82rem; color:var(--ink-soft); margin-bottom:10px;}
+  .occasion-tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:22px;}
+  .occasion-tabs button{background:none; border:1px solid var(--line); padding:8px 14px; font-size:.82rem; border-radius:20px; color:var(--ink-soft);}
+  .occasion-tabs button.active{border-color:var(--brass); color:var(--ink); background:rgba(169,120,47,.1);}
+  .formula-list{display:grid; gap:12px;}
+  .formula-card{border:1px solid var(--line); padding:16px 18px; font-size:.92rem; background:#faf7ef;}
+  .budget-tiers{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media (max-width:760px){ .budget-tiers{grid-template-columns:1fr;} }
+  .budget-tier{border:1px solid var(--line); padding:22px; background:#faf7ef;}
+  .budget-tier h4{font-size:.72rem; letter-spacing:.03em; color:var(--brass); margin-bottom:10px;}
+  .budget-tier p{font-size:.88rem; color:var(--ink-soft); margin-bottom:0;}
+  .outfit-cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:18px;}
+  .outfit-card{border:1px solid var(--line); background:#faf7ef; padding:18px;}
+  .outfit-card .palette-row{margin:0 0 12px;}
+  .outfit-card h4{font-size:.95rem; margin-bottom:8px;}
+  .outfit-card ul{margin:0; padding-left:16px; font-size:.85rem; color:var(--ink-soft);}
+
+  /* ---------- Blueprint (Module 3) ---------- */
+  #quiz-wrap{max-width:640px; margin:0 auto; padding:60px 0 100px;}
+  #quiz-progress{height:4px; background:var(--line); margin-bottom:18px;}
+  #quiz-live-preview{font-size:.85rem; color:var(--ink-soft); margin-bottom:26px; min-height:1.3em;}
+  #quiz-live-preview b{color:var(--brass); font-family:var(--serif); font-style:italic;}
+  #quiz-progress-fill{height:100%; background:var(--brass); width:8%; transition:width .3s ease;}
+  .quiz-q{display:none;}
+  .quiz-q.active{display:block; animation:rise .3s ease both;}
+  .quiz-q .qnum{font-size:.78rem; color:var(--brass); margin-bottom:10px;}
+  .quiz-q h2{font-size:1.5rem; font-weight:500; margin-bottom:26px;}
+  .quiz-options{display:flex; flex-direction:column; gap:10px;}
+  .quiz-options button{
+    text-align:left; background:#faf7ef; border:1px solid var(--line); padding:16px 18px; font-size:.95rem;
+    border-radius:var(--radius);
+  }
+  .quiz-options button:hover{border-color:var(--brass);}
+  .quiz-options button.selected{border-color:var(--brass); background:rgba(169,120,47,.1);}
+  .quiz-options.arch-grid-options{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  @media (max-width:600px){ .quiz-options.arch-grid-options{grid-template-columns:1fr;} }
+  .quiz-options button.arch-choice{display:flex; flex-direction:column; align-items:flex-start; gap:4px;}
+  .arch-choice-pal{display:flex; gap:4px; margin-bottom:2px;}
+  .arch-choice-pal span{width:13px; height:13px; display:inline-block; border:1px solid var(--line);}
+  .arch-choice b{font-family:var(--serif); font-size:1rem; font-weight:500;}
+  .arch-choice small{font-size:.78rem; color:var(--ink-soft); font-style:italic;}
+  .quiz-nav{display:flex; justify-content:space-between; margin-top:34px;}
+  #report{padding:50px 0 100px; display:none;}
+  #report.active{display:block;}
+  .report-sheet{border:1px solid var(--line); background:#faf7ef; padding:48px; position:relative;}
+  .report-sheet::before{content:""; position:absolute; inset:8px; border:1px solid var(--line); pointer-events:none;}
+  .report-eyebrow{font-size:.75rem; letter-spacing:.04em; color:var(--brass); margin-bottom:6px;}
+  .report-title{font-size:clamp(1.7rem,4vw,2.3rem); font-weight:400; margin-bottom:2px;}
+  .report-sub{font-family:var(--serif); font-style:italic; color:var(--ink-soft); margin-bottom:30px;}
+  .report-grid{display:grid; grid-template-columns:1fr 1fr; gap:36px; margin-bottom:30px;}
+  @media (max-width:700px){ .report-grid{grid-template-columns:1fr;} }
+  .meter{margin-bottom:16px;}
+  .meter label{display:flex; justify-content:space-between; font-size:.8rem; color:var(--ink-soft); margin-bottom:6px;}
+  .meter-bar{height:6px; background:var(--line);}
+  .meter-fill{height:100%; background:var(--brass);}
+  .report-list{margin:0 0 20px; padding-left:18px; font-size:.9rem; color:var(--ink-soft);}
+  .report-list li{margin-bottom:6px;}
+  .report-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:20px; align-items:center;}
+  .export-status{font-size:.8rem; color:var(--ink-soft);}
+  .secondary-note{font-size:.85rem; color:var(--ink-soft); border-top:1px solid var(--line); padding-top:20px; margin-top:10px;}
+  .fw-card-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:10px;}
+  @media (max-width:700px){ .fw-card-grid{grid-template-columns:1fr;} }
+  .fw-card{border:1px solid var(--line); background:var(--paper); padding:16px 18px;}
+  .fw-card .fw-cat{font-size:.68rem; letter-spacing:.03em; color:var(--brass); display:block; margin-bottom:6px;}
+  .fw-card h5{font-family:var(--serif); font-size:1rem; font-weight:500; margin-bottom:6px;}
+  .fw-card p{font-size:.85rem; color:var(--ink-soft); margin:0;}
+  .road-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  @media (max-width:700px){ .road-grid{grid-template-columns:1fr;} }
+  .road-step{border-left:2px solid var(--brass); padding:4px 0 4px 14px;}
+  .road-step span{font-size:.7rem; letter-spacing:.03em; color:var(--brass); display:block; margin-bottom:6px;}
+  .road-step p{font-size:.86rem; color:var(--ink-soft); margin:0;}
+  .glossary-search{
+    margin-top:20px; width:100%; max-width:440px; padding:12px 16px; font-family:var(--sans); font-size:.92rem;
+    border:1px solid var(--line); background:var(--paper); color:var(--ink); border-radius:var(--radius);
+  }
+  .glossary-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px 34px;}
+  @media (max-width:760px){ .glossary-grid{grid-template-columns:1fr;} }
+  .glossary-term{border-bottom:1px solid var(--line); padding-bottom:16px; padding-left:12px; border-left:2px solid transparent; transition:border-color .15s ease;}
+  .glossary-term:hover{border-left-color:var(--brass);}
+  .glossary-term h4{font-family:var(--serif); font-size:1.05rem; font-weight:500; margin-bottom:6px;}
+  .glossary-term p{font-size:.9rem; color:var(--ink-soft); margin:0;}
+  .glossary-term mark{background:rgba(169,120,47,.28); color:var(--ink); padding:0 1px;}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid var(--line); padding:40px 0 calc(40px + var(--pad-bottom)); background:var(--ink); color:rgba(241,235,222,.6);}
+  footer .wrap{display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; font-size:.85rem;}
+  footer .foot-mark{font-family:var(--serif); color:var(--paper); font-size:1rem;}
+
+  @media print{
+    #app-sidebar, footer, .report-actions, #onboard-panel{display:none !important;}
+    body{background:#fff;}
+    .report-sheet{border:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LANDING ============ -->
+<section id="view-landing">
+  <div class="wrap landing-top">
+    <div class="landing-num">A system in three parts</div>
+    <h1 class="landing-mark">The Modern<br><em>Style Manual</em></h1>
+    <p class="landing-sub">Style isn't taste you're born with. It's a set of rules you can learn, apply, and eventually forget you're following. This is that system: what to understand, how to apply it, and a tool that tells you exactly where to start.</p>
+  </div>
+  <div class="wrap landing-bottom">
+    <button class="btn" id="btn-begin">Begin the questionnaire</button>
+    <p class="landing-manifesto">Three short questions set up your profile. Everything else — the archetypes, the frameworks, the blueprint tool — adjusts to you from there.</p>
+  </div>
+</section>
+
+<!-- ============ ONBOARDING ============ -->
+<div id="onboard-panel" class="hide">
+  <div class="onboard-card">
+    <div class="onboard-step active" data-step="1">
+      <div class="onboard-eyebrow">Step 1 of 6</div>
+      <h2>What should we call you?</h2>
+      <p class="hint">Your name personalises the Codex, the Framework and your Arbiter report.</p>
+      <div class="field">
+        <label for="in-name">Name</label>
+        <input type="text" id="in-name" placeholder="e.g. Joel" autocomplete="given-name">
+      </div>
+      <div class="onboard-nav">
+        <div class="onboard-dots"><span class="on"></span><span></span><span></span><span></span><span></span><span></span></div>
+        <button class="btn small" id="step1-next">Continue</button>
+      </div>
+    </div>
+
+    <div class="onboard-step" data-step="2">
+      <div class="onboard-eyebrow">Step 2 of 6</div>
+      <h2>What's pulling you toward this?</h2>
+      <p class="hint">This decides which module we point you to first.</p>
+      <div class="choice-grid" id="goal-choices">
+        <button class="choice" data-val="work">Look sharper for work</button>
+        <button class="choice" data-val="brand">Build a personal brand look</button>
+        <button class="choice" data-val="everyday">Fix my everyday basics</button>
+        <button class="choice" data-val="standout">Stand out on purpose</button>
+        <button class="choice" data-val="effortless">Simplify decisions entirely</button>
+        <button class="choice" data-val="timeless">Build a wardrobe that lasts</button>
+      </div>
+      <div class="onboard-nav">
+        <div class="onboard-dots"><span class="on"></span><span class="on"></span><span></span><span></span><span></span><span></span></div>
+        <button class="btn small" id="step2-next" disabled>Continue</button>
+      </div>
+    </div>
+
+    <div class="onboard-step" data-step="3">
+      <div class="onboard-eyebrow">Step 3 of 6</div>
+      <h2>How would you describe your wardrobe right now?</h2>
+      <p class="hint">No wrong answer — this just sets your starting point.</p>
+      <div class="choice-grid" id="wardrobe-choices">
+        <button class="choice" data-val="scattered">A bit of everything, no real system</button>
+        <button class="choice" data-val="basic">Mostly basics, could use more personality</button>
+        <button class="choice" data-val="curated">Pretty curated already, refining further</button>
+        <button class="choice" data-val="scratch">Starting close to scratch</button>
+      </div>
+      <div class="onboard-nav">
+        <div class="onboard-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+        <button class="btn small" id="step3-next" disabled>Continue</button>
+      </div>
+    </div>
+
+    <div class="onboard-step" data-step="4">
+      <div class="onboard-eyebrow">Step 4 of 6</div>
+      <h2>How much time do you want to spend thinking about outfits?</h2>
+      <p class="hint">This shapes how your Arbiter roadmap is paced.</p>
+      <div class="choice-grid" id="effort-choices">
+        <button class="choice" data-val="minimal">As little as possible — give me a system</button>
+        <button class="choice" data-val="moderate">A few minutes a day is fine</button>
+        <button class="choice" data-val="high">I enjoy the process, within reason</button>
+      </div>
+      <div class="onboard-nav">
+        <div class="onboard-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+        <button class="btn small" id="step4-next" disabled>Continue</button>
+      </div>
+    </div>
+
+    <div class="onboard-step" data-step="5">
+      <div class="onboard-eyebrow">Step 5 of 6</div>
+      <h2>How would you describe your budget?</h2>
+      <p class="hint">Recommendations across the product respect this — no guessing later.</p>
+      <div class="choice-grid" id="budget-choices">
+        <button class="choice" data-val="accessible">Accessible — building the basics</button>
+        <button class="choice" data-val="mid">Mid-range — a mix of both</button>
+        <button class="choice" data-val="premium">Investment — buying for the long run</button>
+      </div>
+      <div class="onboard-nav">
+        <div class="onboard-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+        <button class="btn small" id="step5-next" disabled>Continue</button>
+      </div>
+    </div>
+
+    <div class="onboard-step" data-step="6">
+      <div class="onboard-eyebrow">Step 6 of 6</div>
+      <h2>How should Arbiter talk to you?</h2>
+      <p class="hint">Sets the tone of your reports — change it any time from Restart.</p>
+      <div class="choice-grid" id="tone-choices">
+        <button class="choice" data-val="direct">Direct and efficient</button>
+        <button class="choice" data-val="warm">Warm and encouraging</button>
+        <button class="choice" data-val="thorough">Detailed and thorough</button>
+      </div>
+      <div class="onboard-nav">
+        <div class="onboard-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+        <button class="btn small" id="step6-done" disabled>Enter The Modern Style Manual</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APP SHELL ============ -->
+<div id="app" class="hide">
+  <aside id="app-sidebar">
+    <button id="sidebar-toggle" aria-label="Collapse sidebar">‹</button>
+    <div class="side-mark">The Modern<br>Style Manual</div>
+    <div class="side-tagline">A system in three parts, plus reference</div>
+    <nav class="side-nav">
+      <button data-view="home"><span class="side-num">&bull;</span><span class="side-label">Index</span><span class="side-desc">Your overview &amp; progress</span></button>
+      <button data-view="codex"><span class="side-num">I</span><span class="side-label">The Codex</span><span class="side-desc">10 gentleman registers, as an eBook</span></button>
+      <button data-view="framework"><span class="side-num">II</span><span class="side-label">The Framework</span><span class="side-desc">Fit, colour &amp; wardrobe tools</span></button>
+      <button data-view="blueprint"><span class="side-num">III</span><span class="side-label">The Blueprint</span><span class="side-desc">Arbiter builds your system</span></button>
+      <button data-view="glossary"><span class="side-num">&sect;</span><span class="side-label">Glossary</span><span class="side-desc">30 terms, searchable</span></button>
+    </nav>
+    <div class="side-foot">
+      <span id="nav-name">Hi</span>
+      <button class="link" id="btn-restart">Restart</button>
+    </div>
+  </aside>
+
+  <div id="app-main">
+
+  <!-- ---------- HOME ---------- -->
+  <section id="view-home">
+    <div class="wrap">
+      <div class="home-intro">
+        <div class="eyebrow">Welcome back</div>
+        <h1 id="home-greeting">Hello.</h1>
+        <p>Most people treat style as instinct: something you either have or don't. It isn't. It's a small set of rules about proportion, colour and context that anyone can learn — the same way you'd learn a pricing model or a sales script. The Modern Style Manual teaches you those rules, then hands you the tools — and an assistant — to apply them without having to think from scratch every morning.</p>
+        <p>Three parts, meant to be worked through in order once and revisited out of order forever after: understand the landscape, apply it to your own body and wardrobe, then let Arbiter build a system specifically around your answers. A searchable glossary sits alongside all three for whenever a term trips you up.</p>
+      </div>
+      <div class="stat-chips">
+        <span><b>10</b> gentleman registers</span>
+        <span><b>7</b> interactive tools</span>
+        <span><b>9</b>-question Arbiter blueprint</span>
+        <span><b>30</b>-term glossary</span>
+        <span>Saved locally, <b>always yours</b></span>
+      </div>
+      <div class="journey-panel" id="journey-panel">
+        <div class="journey-head">Your journey</div>
+        <div class="journey-rows" id="journey-rows"></div>
+      </div>
+      <div class="modules">
+        <div class="module-row" data-goto="codex">
+          <div class="module-num">I</div>
+          <div class="module-body">
+            <span class="module-tag">Understand</span>
+            <h3>The Codex</h3>
+            <p>Ten registers of gentleman dress, White Tie to the Dandy, as a small eBook: where each comes from, who it suits, how to shop for it, and whether it actually fits your life.</p>
+          </div>
+          <button class="btn dark small">Open</button>
+        </div>
+        <div class="module-row" data-goto="framework">
+          <div class="module-num">II</div>
+          <div class="module-body">
+            <span class="module-tag">Apply</span>
+            <h3>The Framework</h3>
+            <p>Fit, proportion and colour worked out with live tools, plus wardrobe frameworks, ready-made outfit formulas and curated shopping guidance.</p>
+          </div>
+          <button class="btn dark small">Open</button>
+        </div>
+        <div class="module-row" data-goto="blueprint">
+          <div class="module-num">III</div>
+          <div class="module-body">
+            <span class="module-tag">Your system</span>
+            <h3>The Blueprint</h3>
+            <p>Arbiter reads your budget, goals, desired impression and character, then assembles a personal archetype match, palette, framework picks and a 90-day roadmap.</p>
+          </div>
+          <button class="btn dark small">Open</button>
+        </div>
+        <div class="module-row" data-goto="glossary">
+          <div class="module-num">&sect;</div>
+          <div class="module-body">
+            <span class="module-tag">Reference</span>
+            <h3>The Glossary</h3>
+            <p>Thirty tailoring and style terms, searchable, so a fit note or a salesperson's shorthand never leaves you guessing.</p>
+          </div>
+          <button class="btn dark small">Open</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- MODULE I: CODEX ---------- -->
+  <section id="view-codex" class="hide">
+    <div class="section-hero">
+      <div class="wrap">
+        <div class="eyebrow">Module I — The Gentleman's eBook</div>
+        <h1>The Codex</h1>
+        <p>Ten registers of gentleman dress, from White Tie at the most formal end down to the flair of the Dandy — the full spectrum a well-dressed man actually moves through across a life, not just a single wardrobe mood. The Codex is built as a small eBook: click through it chapter by chapter from the menu, or switch to scroll mode and read it front to back like a book.</p>
+        <p class="lead2">Every chapter runs two pages. Page I is the reference: where the register comes from, who it suits, how to shop for it, and the rules that hold it together. Page II is personal — set three sliders to what you actually need, and see how that register measures up.</p>
+        <div class="hero-chips"><span>10 chapters</span><span>2 pages each</span><span>Chapter or full-scroll reading</span></div>
+        <div class="ebook-toggle">
+          <button data-mode="chapter" class="active">Read by chapter</button>
+          <button data-mode="scroll">Scroll the full book</button>
+        </div>
+        <div class="quickmatch">
+          <h4>Quick match — find your closest chapter</h4>
+          <div class="qm-row"><label><span>How formal is your day-to-day?</span><span id="qm-f-val">3.0</span></label><input type="range" id="qm-formality" min="1" max="5" step="0.5" value="3"></div>
+          <div class="qm-row"><label><span>How much attention should the outfit draw?</span><span id="qm-b-val">3.0</span></label><input type="range" id="qm-boldness" min="1" max="5" step="0.5" value="3"></div>
+          <div id="qm-result"><span id="qm-result-text">Move the sliders to see your closest match.</span><button class="btn dark small" id="qm-jump">Jump to chapter</button></div>
+        </div>
+      </div>
+    </div>
+    <div id="codex-layout" class="wrap" style="padding:0;">
+      <nav id="codex-toc"></nav>
+      <div id="codex-panels"></div>
+    </div>
+  </section>
+
+  <!-- ---------- MODULE II: FRAMEWORK ---------- -->
+  <section id="view-framework" class="hide">
+    <div class="section-hero">
+      <div class="wrap">
+        <div class="eyebrow">Module II — Apply</div>
+        <h1>The Framework</h1>
+        <p>Knowing the archetypes is theory. The Framework is where it turns into decisions you can actually make in front of your own wardrobe. Seven live tools cover the mechanics that apply no matter which chapter of the Codex you lean toward: how proportion reads on a body, how to build a colour system instead of guessing, which patterns are safe to mix, and how to assemble a capsule that doesn't need constant rebuying.</p>
+        <p class="lead2">Use the tabs below in any order. Your capsule progress and body-priority tips carry over from your Blueprint automatically once you've completed it.</p>
+        <div class="hero-chips"><span>7 interactive tools</span><span>Live colour wheel</span><span>Trackable capsule checklist</span></div>
+      </div>
+    </div>
+    <div id="framework-tabs">
+      <div class="wrap">
+        <button data-fw="fit" class="active">Fit &amp; Proportion</button>
+        <button data-fw="colour">Colour</button>
+        <button data-fw="compat">Compatibility</button>
+        <button data-fw="wardrobe">Wardrobe Frameworks</button>
+        <button data-fw="templates">Practical Templates</button>
+        <button data-fw="shopping">Curated Recommendations</button>
+        <button data-fw="examples">Outfit Examples</button>
+      </div>
+    </div>
+
+    <div class="fw-panel active" data-fw="fit">
+      <div class="wrap">
+        <h2>Fit &amp; proportion</h2>
+        <p class="lead">Fit does more for how put-together you look than any single garment choice. The core rule: avoid a 50/50 split between your top and bottom half — one should visually take up roughly a third, the other two-thirds.</p>
+        <div class="two-col">
+          <div class="card">
+            <div class="slider-row">
+              <label><span>Where your top ends</span><span id="fit-slider-val">40%</span></label>
+              <input type="range" id="fit-slider" min="20" max="80" value="40">
+            </div>
+            <div id="proportion-figure">
+              <svg width="120" height="220" viewBox="0 0 120 220">
+                <rect x="30" y="0" width="60" height="220" fill="none" stroke="var(--line)" stroke-width="1"></rect>
+                <rect id="prop-top" x="30" y="0" width="60" height="88" fill="var(--brass)" opacity=".85"></rect>
+                <rect id="prop-bottom" x="30" y="88" width="60" height="132" fill="var(--ink)" opacity=".85"></rect>
+                <line x1="20" y1="73.3" x2="100" y2="73.3" stroke="var(--brass)" stroke-dasharray="3 3" stroke-width="1"></line>
+                <line x1="20" y1="146.6" x2="100" y2="146.6" stroke="var(--brass)" stroke-dasharray="3 3" stroke-width="1"></line>
+              </svg>
+            </div>
+            <div id="proportion-feedback"></div>
+          </div>
+          <div class="card">
+            <h4 style="font-size:.72rem;letter-spacing:.03em;color:var(--brass);margin-bottom:12px;">Fit checkpoints</h4>
+            <ul style="padding-left:18px; font-size:.92rem; color:var(--ink-soft);">
+              <li>Shoulder seams sit exactly on the shoulder bone — not past it, not short of it.</li>
+              <li>A shirt fits through the chest without pulling between the buttons when you move.</li>
+              <li>Trousers break once at most on the shoe, or sit cleanly above it for a cropped look.</li>
+              <li>Sleeves stop where the wrist bends, showing a little shirt cuff under a jacket.</li>
+              <li>Waistbands sit at your natural waist unless you're deliberately styling low-rise.</li>
+            </ul>
+            <h4 style="font-size:.72rem;letter-spacing:.03em;color:var(--brass);margin:18px 0 12px;">By body priority</h4>
+            <ul id="body-priority-tips" style="padding-left:18px; font-size:.92rem; color:var(--ink-soft);"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fw-panel" data-fw="colour">
+      <div class="wrap">
+        <h2>Colour</h2>
+        <p class="lead">Pick any colour on the wheel and see how to build a small, confident palette around it: a contrast pairing for one statement piece, two tonal neighbours for everyday wear, and a neutral to ground all three.</p>
+        <div class="wheel-wrap">
+          <svg id="color-wheel" width="220" height="220" viewBox="0 0 220 220"></svg>
+          <div class="palette-output">
+            <div style="font-size:.9rem; color:var(--ink-soft); margin-bottom:4px;" id="wheel-picked">Click a wedge to start.</div>
+            <h4>Complementary — for one statement piece</h4>
+            <div class="palette-row" id="wheel-comp"></div>
+            <h4>Analogous — for everyday tonal outfits</h4>
+            <div class="palette-row" id="wheel-analog"></div>
+            <h4>Neutral to ground it</h4>
+            <div class="palette-row" id="wheel-neutral"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fw-panel" data-fw="compat">
+      <div class="wrap">
+        <h2>Pattern &amp; texture compatibility</h2>
+        <p class="lead">Pick any two and get an instant verdict, or scan the full reference table below.</p>
+        <div class="card" style="margin-bottom:30px; max-width:640px;">
+          <div class="compat-picker">
+            <select id="compat-a"></select>
+            <span style="color:var(--ink-soft); font-size:.85rem;">+</span>
+            <select id="compat-b"></select>
+          </div>
+          <div id="compat-verdict"></div>
+        </div>
+        <table class="compat-table">
+          <thead><tr><th>Pairing</th><th>Verdict</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Stripe + solid</td><td class="tag-ok">Safe</td><td>The solid gives the eye somewhere to rest.</td></tr>
+            <tr><td>Stripe + stripe</td><td class="tag-ok">Works if scaled differently</td><td>A thin pinstripe and a wide rugby stripe read as separate elements.</td></tr>
+            <tr><td>Check + solid</td><td class="tag-ok">Safe</td><td>Same logic as stripe plus solid.</td></tr>
+            <tr><td>Check + stripe</td><td class="tag-risk">Risky</td><td>Two directional patterns compete unless colours match closely.</td></tr>
+            <tr><td>Floral + solid</td><td class="tag-ok">Safe</td><td>Let the floral be the only pattern in the outfit.</td></tr>
+            <tr><td>Matte + shine (e.g. wool + leather)</td><td class="tag-ok">Safe</td><td>Contrasting texture reads as intentional, not clashing.</td></tr>
+            <tr><td>Two heavy textures (e.g. tweed + corduroy)</td><td class="tag-risk">Risky in warm weather</td><td>Visually and physically heavy; better for layered cold-weather looks.</td></tr>
+            <tr><td>Bold colour + bold pattern</td><td class="tag-risk">Risky</td><td>Pick one focal point — loud colour or loud pattern, not both.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="fw-panel" data-fw="wardrobe">
+      <div class="wrap">
+        <h2>Wardrobe frameworks</h2>
+        <p class="lead">A capsule wardrobe removes decisions by making sure everything already works together. Check off what you own — the meter tracks how close you are to a fully interchangeable core.</p>
+        <div id="capsule-meter-label">0 of 24 core pieces covered</div>
+        <div id="capsule-meter"><div id="capsule-meter-fill"></div></div>
+        <div id="capsule-list"></div>
+      </div>
+    </div>
+
+    <div class="fw-panel" data-fw="templates">
+      <div class="wrap">
+        <h2>Practical templates</h2>
+        <p class="lead">Ready-made outfit formulas by occasion. Swap the named piece for whatever archetype fits your Codex read.</p>
+        <div class="occasion-tabs" id="occasion-tabs"></div>
+        <div class="formula-list" id="occasion-formulas"></div>
+      </div>
+    </div>
+
+    <div class="fw-panel" data-fw="shopping">
+      <div class="wrap">
+        <h2>Curated recommendations</h2>
+        <p class="lead">Where to actually shop, organised by budget tier rather than by trend. Use one tier consistently rather than mixing all three at once.</p>
+        <div class="budget-tiers">
+          <div class="budget-tier">
+            <h4>Accessible</h4>
+            <p>Build volume and test archetypes cheaply before investing. Look at Uniqlo, Zara, H&amp;M and COS for clean basics, and Muji for simple layering pieces.</p>
+          </div>
+          <div class="budget-tier">
+            <h4>Mid-range</h4>
+            <p>Better fabric and construction for pieces worn weekly. Look at Massimo Dutti, Reiss, Todd Snyder and Everlane for tailoring and elevated basics.</p>
+          </div>
+          <div class="budget-tier">
+            <h4>Investment</h4>
+            <p>Reserve for outerwear, tailoring and shoes worn for years. Look at a trusted local tailor first, then houses like Brunello Cucinelli, Loro Piana or a made-to-measure suit maker.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fw-panel" data-fw="examples">
+      <div class="wrap">
+        <h2>Outfit examples</h2>
+        <p class="lead">Six finished outfits across common occasions, shown as their colour story plus the exact pieces.</p>
+        <div class="outfit-cards" id="outfit-examples"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- MODULE III: BLUEPRINT ---------- -->
+  <section id="view-blueprint" class="hide">
+    <div class="section-hero">
+      <div class="wrap">
+        <div class="eyebrow">Module III — Your system</div>
+        <h1>The Blueprint</h1>
+        <p>Meet <strong>Arbiter</strong> — the assembly engine behind this module, named for the Roman <em>arbiter elegantiae</em>, the court's judge of taste. Arbiter doesn't assign you a style. Ten short questions build a picture of your formality, goals, budget, desired impression and natural character — then one question hands you the shortlist and lets you pick which archetype actually speaks to you. Arbiter tunes everything after that — palette, fit priorities, framework picks from a working library of thirty, and a 90-day roadmap — to your choice and your answers.</p>
+        <p class="lead2">Nothing here leaves your browser. Your answers, and Arbiter's picks, are saved locally so you can revisit or retake the assessment any time your goals change.</p>
+        <div class="hero-chips"><span>10 questions</span><span>You choose your style</span><span>30-framework library</span><span>Exportable report</span></div>
+      </div>
+    </div>
+
+    <div id="quiz-wrap" class="wrap">
+      <div id="quiz-progress"><div id="quiz-progress-fill"></div></div>
+      <div id="quiz-live-preview"></div>
+      <div id="quiz-questions"></div>
+      <div class="quiz-nav">
+        <button class="btn ghost small" id="quiz-back" style="color:var(--ink); border-color:var(--line);">Back</button>
+        <button class="btn dark small" id="quiz-next" disabled>Next</button>
+      </div>
+    </div>
+
+    <div id="report" class="wrap">
+      <div class="report-sheet">
+        <div class="report-eyebrow">Style Blueprint — prepared for</div>
+        <h2 class="report-title" id="report-name">—</h2>
+        <div class="report-sub" id="report-tagline">—</div>
+
+        <div class="report-grid">
+          <div>
+            <h4 style="font-size:.72rem;letter-spacing:.03em;color:var(--brass);margin-bottom:12px;">Primary archetype</h4>
+            <div id="report-primary" style="font-family:var(--serif); font-size:1.4rem; margin-bottom:6px;"></div>
+            <p id="report-primary-why" style="font-size:.9rem; color:var(--ink-soft);"></p>
+            <h4 style="font-size:.72rem;letter-spacing:.03em;color:var(--brass);margin:18px 0 8px;">Secondary influence</h4>
+            <div id="report-secondary" style="font-family:var(--serif); font-size:1.15rem;"></div>
+          </div>
+          <div>
+            <div class="meter"><label><span>Formality</span><span id="m-formality-label"></span></label><div class="meter-bar"><div class="meter-fill" id="m-formality"></div></div></div>
+            <div class="meter"><label><span>Boldness</span><span id="m-boldness-label"></span></label><div class="meter-bar"><div class="meter-fill" id="m-boldness"></div></div></div>
+            <h4 style="font-size:.72rem;letter-spacing:.03em;color:var(--brass);margin:14px 0 8px;">Your palette</h4>
+            <div class="palette-row" id="report-palette"></div>
+          </div>
+        </div>
+
+        <h4 style="font-size:.72rem;letter-spacing:.03em;color:var(--brass);margin-bottom:8px;">Fit priorities for you</h4>
+        <ul class="report-list" id="report-fit"></ul>
+
+        <h4 style="font-size:.72rem;letter-spacing:.03em;color:var(--brass);margin-bottom:8px;">Three formulas to start with</h4>
+        <ul class="report-list" id="report-formulas"></ul>
+
+        <h4 style="font-size:.72rem;letter-spacing:.03em;color:var(--brass);margin-bottom:12px;">Arbiter's picks — frameworks matched to your answers</h4>
+        <div class="fw-card-grid" id="report-frameworks"></div>
+
+        <h4 style="font-size:.72rem;letter-spacing:.03em;color:var(--brass);margin:26px 0 12px;">Your 90-day roadmap</h4>
+        <div class="road-grid" id="report-roadmap"></div>
+
+        <div class="secondary-note">Go deeper on your primary archetype in <strong>The Codex</strong>, and build your capsule in <strong>The Framework</strong>. This blueprint is a starting point, not a cage — revisit it, or ask Arbiter again, any time your goals change.</div>
+
+        <div class="report-actions">
+          <button class="btn dark small" id="btn-export">Export assessment</button>
+          <button class="btn ghost small" id="quiz-retake" style="color:var(--ink); border-color:var(--line);">Retake assessment</button>
+          <span id="export-status" class="export-status"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- GLOSSARY ---------- -->
+  <section id="view-glossary" class="hide">
+    <div class="section-hero">
+      <div class="wrap">
+        <div class="eyebrow">Reference</div>
+        <h1>The Glossary</h1>
+        <p>Thirty terms worth knowing so a tailor, a salesperson or a fit note never leaves you guessing. Search by name, or scan the full list.</p>
+        <div class="hero-chips"><span>30 terms</span><span>Searchable</span></div>
+        <input type="text" id="glossary-search" class="glossary-search" placeholder="Search the glossary — try &quot;lapel&quot; or &quot;rise&quot;">
+      </div>
+    </div>
+    <div class="wrap" style="padding-top:36px; padding-bottom:80px;">
+      <div id="glossary-list" class="glossary-grid"></div>
+      <p id="glossary-empty" class="hide" style="color:var(--ink-soft); margin-top:20px;">No terms match that search.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-mark">The Modern Style Manual</div>
+      <div>A system, not a trend. Revisit any module whenever your goals or your wardrobe change.</div>
+    </div>
+  </footer>
+
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------------- Data: the ten archetypes ---------------- */
+var ARCHETYPES = [
+  {id:"whitetie", roman:"I", name:"White Tie", tagline:"Full evening dress — the single most formal thing a gentleman can wear.",
+   compatibility:"Reserved for state banquets, royal events, the most formal balls and weddings that explicitly request it. Works on any build since it is cut to a strict, universal formula. Never appropriate outside an invitation that names it specifically.",
+   history:"Crystallised in 19th-century English court dress as the standard for evening occasions, built around the tailcoat, and has barely changed since — a rare case of a dress code frozen at its original specification rather than evolving with fashion.",
+   shopping:"Rent before you buy unless you expect repeat formal invitations; a correctly cut tailcoat is highly specific and rarely reusable for anything else. If buying, prioritise a tailor who has actually made tailcoats before — the proportions are unforgiving.",
+   whoSuits:["Suits any build, since the silhouette is rigidly defined rather than adapted to the body.","Taller frames carry the long tailcoat line most naturally.","Shorter frames should have the tails shortened slightly rather than worn at standard length."],
+   mistakes:["Wearing a black bow tie instead of white — an instant giveaway of the wrong dress code entirely.","Substituting a standard dress shirt for one without a stiff, winged collar.","Treating it as interchangeable with black tie — the two are not the same register."],
+   signature:["Black tailcoat","White marcella waistcoat","Wing-collar shirt","White bow tie","Patent oxfords"],
+   icons:"State dinners and royal functions, the most formal scenes in classic cinema, evening occasions where the dress code itself is the main event.",
+   rules:["White tie means white tie — no substitutions, no exceptions.","The waistcoat shows beneath the tailcoat front, never hidden.","Studs and cufflinks should match, usually in mother-of-pearl or plain gold.","Nothing here is ever worn without the complete set — it's all or none."],
+   templates:["Tailcoat + wing-collar shirt + white waistcoat + white bow tie + patent shoes","Full set with white gloves for the most formal state occasions","Tailcoat with black trousers only if specified by the invitation"],
+   examples:["State banquet: full tailcoat set, white tie, patent oxfords.","Formal ball: tailcoat, white waistcoat, white gloves.","Royal wedding (evening): complete white tie set exactly as specified."],
+   palette:["#0a0a0d","#f7f4ee","#c9a84c","#1c1c20","#e8e4da"], formality:5, boldness:1, budget:"premium", lifestyle:["social"], goal:["standout","timeless"], impression:["authoritative","magnetic"], character:["traditional","reserved"],
+   comfort:1, professionalism:5, dailyWearability:1,
+   adaptTips:["For slightly more comfort without breaking protocol, choose a marcella waistcoat in a lighter weight rather than full pique.","This is never a daily style — reserve it strictly for invitations that explicitly state 'white tie'."]},
+
+  {id:"blacktie", roman:"II", name:"Black Tie", tagline:"The dinner suit — formal evening wear with a little more room to move.",
+   compatibility:"Built for evening weddings, galas, formal dinners and any invitation marked 'black tie'. Flatters most builds, especially with a peak lapel that broadens the shoulder line. Too formal for daytime and too rigid for anything without an explicit dress code.",
+   history:"Developed in the 1860s as a more relaxed alternative to the tailcoat for private dinners, it slowly became the standard formal-evening option once white tie receded to only the most ceremonial occasions.",
+   shopping:"One well-made dinner suit in midnight navy or black outlasts a decade of invitations. Spend on the jacket's lapel (silk-faced, not cheap satin) and a proper bow tie you can tie yourself rather than a pre-tied clip-on.",
+   whoSuits:["Broader shoulders suit a peak lapel; narrower frames often read better in a shawl collar.","Taller builds carry a longer jacket length comfortably.","Shorter frames should have the jacket shortened slightly from standard to avoid shortening the leg line."],
+   mistakes:["Wearing a standard business tie instead of a bow tie.","Brown shoes with black tie — stay within black patent or plain black leather.","A pre-tied bow tie that's visibly not hand-tied, especially up close."],
+   signature:["Black or midnight-navy dinner jacket","Silk-faced lapel","Black bow tie","Pleated formal shirt","Black patent oxfords"],
+   icons:"Film-noir formal scenes, award ceremonies, the classic image of evening elegance across a century of cinema.",
+   rules:["The lapel is always silk or satin-faced, never the suit's own wool.","Black patent or plain black leather shoes only.","A cummerbund or waistcoat covers the waistband — never show a bare shirt front.","Socks are black, thin, and worn high enough to never show skin."],
+   templates:["Dinner jacket + pleated shirt + bow tie + cummerbund + patent oxfords","Shawl-collar jacket + waistcoat + bow tie for a softer formal register","Midnight navy jacket as a less-expected alternative to black"],
+   examples:["Evening wedding: black dinner jacket, bow tie, patent oxfords.","Charity gala: midnight navy dinner suit, shawl collar.","Awards dinner: peak-lapel jacket, cummerbund, silk bow tie."],
+   palette:["#0d0d10","#12141c","#b89b4e","#1f1f24","#eceae5"], formality:5, boldness:1.5, budget:"premium", lifestyle:["social"], goal:["standout","timeless"], impression:["magnetic","authoritative"], character:["traditional","reserved"],
+   comfort:2, professionalism:5, dailyWearability:1,
+   adaptTips:["A shawl-collar dinner jacket in a soft wool blend reads formal but wears noticeably easier than a peak-lapel version.","One well-made tuxedo, rented or owned, covers a decade of invitations — this isn't a style to build a wardrobe around."]},
+
+  {id:"morningdress", roman:"III", name:"Morning Dress", tagline:"Formal daytime dress — the morning coat register for weddings and the races.",
+   compatibility:"The standard for formal daytime weddings, royal enclosure events and certain state occasions before evening. Suits most builds once the coat's cutaway front is tailored to taper at the waist. Entirely inappropriate after dark, where black or white tie take over.",
+   history:"Evolved from 19th-century riding dress — the cutaway front originally let a gentleman sit on horseback without the coat bunching — and was gradually formalised into the standard for daytime ceremony as riding itself declined.",
+   shopping:"Grey morning coats and waistcoats are widely rented for good reason — this is rarely worn more than a few times a decade even among people who attend frequent formal weddings. If buying, a grey or black coat with a contrasting waistcoat offers the most flexibility across events.",
+   whoSuits:["Suits most builds once the cutaway front is tailored to taper correctly at the waist.","Broader frames should avoid a double-breasted waistcoat, which adds visual bulk.","Leaner frames carry the cutaway line particularly well."],
+   mistakes:["Choosing a black waistcoat when the event calls for a lighter, patterned one.","Pairing it with anything other than striped formal trousers.","Wearing it after dark — this is strictly a daytime register."],
+   signature:["Grey or black morning coat","Contrasting waistcoat","Striped formal trousers","Grey top hat","Spats or plain oxfords"],
+   icons:"Royal Ascot, formal daytime weddings, the image most people picture when they hear 'wedding formal' in Britain.",
+   rules:["The coat is always cut away at the front — never a straight-fronted style.","Trousers are striped, not the coat's own matching fabric.","The waistcoat can carry colour and pattern — this is the one formal register that allows it.","A top hat completes the set but is carried, not worn, indoors."],
+   templates:["Grey morning coat + pale waistcoat + striped trousers + top hat","Black morning coat + black waistcoat for a more subdued register","Coat with a buttonhole flower for wedding-party wear specifically"],
+   examples:["Formal daytime wedding: grey coat, dove waistcoat, striped trousers.","Royal Ascot: black coat, patterned waistcoat, top hat.","Groom's formalwear: coat with matching waistcoat and a boutonnière."],
+   palette:["#2a2d33","#8d8f94","#c6c2b6","#111214","#e4e0d4"], formality:5, boldness:1.5, budget:"premium", lifestyle:["social"], goal:["timeless","standout"], impression:["authoritative","calm"], character:["traditional","reserved"],
+   comfort:2, professionalism:5, dailyWearability:1,
+   adaptTips:["Choose a lighter grey waistcoat over a heavier one for warm-weather daytime events.","This is occasion-wear by design — treat it as a once- or twice-a-year rental or a single owned set, not a rotation."]},
+
+  {id:"formalbusiness", roman:"IV", name:"Formal Business", tagline:"The three-piece register — business dress at its most deliberate.",
+   compatibility:"Suits boardroom presentations, client pitches in conservative industries, and anyone who wants business dress to read as a small occasion rather than a routine. Works on most builds with correct waistcoat tailoring. Reads as overdressed in creative or casual-leaning offices.",
+   history:"The three-piece suit was standard business dress through much of the 20th century before the waistcoat was gradually dropped for convenience; it persists today specifically where a slightly elevated, more deliberate formality is wanted.",
+   shopping:"The waistcoat is the piece worth the most attention — it should sit close without pulling at the buttons when seated. Buy the three pieces as a matched set rather than assembling separately; mismatched waistcoats rarely read as intentional.",
+   whoSuits:["Suits most builds, though the waistcoat benefits from a slightly longer torso to sit cleanly.","Broader builds should avoid double-breasted waistcoats, which add bulk.","Shorter frames should keep the waistcoat's bottom button just above the belt line, not lower."],
+   mistakes:["Buttoning the waistcoat's bottom button — a near-universal formal-wear rule it breaks.","Wearing the waistcoat without the jacket in a formal boardroom setting.","Choosing a waistcoat fabric that doesn't match the suit, which reads as separates rather than formal."],
+   signature:["Three-piece suit in navy or charcoal","Matching waistcoat","Silk tie","Pocket square","Oxford shoes"],
+   icons:"Old-guard law and banking culture, the boardroom scenes of mid-century business cinema, a register that signals seniority through formality alone.",
+   rules:["Leave the waistcoat's bottom button undone, always.","The waistcoat covers the waistband completely when standing.","Tie and pocket square should coordinate, not match exactly.","Reserve this for genuinely formal business occasions, not daily wear."],
+   templates:["Three-piece suit + silk tie + pocket square + oxfords","Waistcoat worn jacket-off at the desk, jacket on for meetings","Charcoal three-piece with a subtle pinstripe for added authority"],
+   examples:["Board presentation: navy three-piece, silk tie, oxfords.","Partner-track interview: charcoal three-piece, white pocket square.","Formal client dinner: three-piece suit, jacket worn throughout."],
+   palette:["#15161a","#283142","#5c6678","#9aa1ac","#e9eaec"], formality:4.5, boldness:1, budget:"premium", lifestyle:["corporate"], goal:["work","timeless"], impression:["authoritative","disciplined"], character:["traditional","pragmatic"],
+   comfort:3, professionalism:5, dailyWearability:3,
+   adaptTips:["Have the waistcoat tailored slightly looser than you'd think — it's worn for a full day, not a photograph.","A three-piece reads well twice a week; wearing it daily starts to look like you're trying too hard for the room."]},
+
+  {id:"bizprofessional", roman:"V", name:"Business Professional", tagline:"The standard two-piece suit — the everyday register of formal business.",
+   compatibility:"The most universally recognised formal business register, suited to client-facing roles, interviews, law, finance and government. Works on nearly every build with basic tailoring. The safest choice when a dress code is unclear but formality is expected.",
+   history:"Standardised through the 20th century as the lounge suit replaced more elaborate Victorian formal dress for daily business, and has remained essentially unchanged as the baseline of professional dress since.",
+   shopping:"Buy two or three suits in rotation rather than one worn daily — fabric needs recovery time between wears. Navy and charcoal cover the widest range of business contexts; a third in a subtle pattern adds range without sacrificing formality.",
+   whoSuits:["Suits any build once the shoulder seam is correctly fitted.","Broader builds should avoid heavily padded shoulders, which add bulk.","Shorter frames should keep the jacket length just covering the seat, not longer."],
+   mistakes:["Wearing the same single suit daily until it visibly wears out.","A tie that's too short or too long for the torso.","Shoes that don't match the belt in both colour and formality."],
+   signature:["Two-piece suit in navy or charcoal","Dress shirt","Silk tie","Leather belt matching the shoes","Oxford or derby shoes"],
+   icons:"The default image of 'dressed for work' across most industries worldwide, unremarkable by design and reliable because of it.",
+   rules:["Jacket and trousers should always match exactly — this is not the register for separates.","Tie width should roughly track the lapel width.","Belt and shoes match in colour and leather finish.","Rotate at least two suits so neither one bears all the week's wear."],
+   templates:["Suit + dress shirt + tie + oxfords","Suit without tie for slightly relaxed formal settings","Suit with a patterned tie for client-facing variety"],
+   examples:["Client meeting: navy suit, white shirt, navy tie, oxfords.","Interview: charcoal suit, light blue shirt, burgundy tie.","Internal review: suit, no tie, top button open."],
+   palette:["#191b20","#2f3847","#6b7483","#a7adb6","#edeef0"], formality:4, boldness:1, budget:"mid", lifestyle:["corporate"], goal:["work","timeless"], impression:["authoritative","disciplined"], character:["pragmatic","traditional"],
+   comfort:3, professionalism:4, dailyWearability:5,
+   adaptTips:["Half-canvas construction in the jacket keeps this wearable across a full working week without fatigue.","This is built for daily wear — rotate at least three suits so none breaks down from overuse."]},
+
+  {id:"bizcasual", roman:"VI", name:"Business Casual", tagline:"Professional without the jacket doing all the work.",
+   compatibility:"Fits most modern offices, client-facing hybrid roles and creative agencies with dress codes softer than a suit. Flatters most builds since layering pieces adjust individually. Reads under-dressed for anything in the formal-business register above it.",
+   history:"Emerged in the 1990s as tech and media companies relaxed corporate dress while still wanting employees to look intentional. It borrowed tailoring's structure and removed its rigidity, becoming the default office uniform by the 2010s.",
+   shopping:"Build around two or three blazers that work without a matching trouser, five versatile shirts or knits, and one strong pair of leather shoes that isn't a dress oxford. Chinos in navy, olive and stone cover most scenarios.",
+   whoSuits:["Flatters most builds because layering pieces adjust individually rather than as one fixed silhouette.","Athletic builds can lean into knitwear that shows shape without a jacket's structure.","Leaner builds benefit from a slightly more generous knit to avoid looking swamped by a blazer."],
+   mistakes:["Treating 'casual' as an excuse to lose all structure.","Wearing athletic sneakers instead of clean leather ones.","Pairing a loud print shirt with an already busy jacket."],
+   signature:["Unstructured blazer","Knit polo","Chinos in navy or stone","Leather sneakers","Slim leather belt"],
+   icons:"The relaxed authority of a founder presenting to investors, the easy polish of a creative director in client meetings.",
+   rules:["Ditch the tie, keep the collar structured.","One tailored piece anchors the rest of the outfit.","Knitwear replaces the blazer on lower-stakes days.","Sneakers only if leather and minimal, never athletic."],
+   templates:["Blazer + knit polo + chinos + leather sneakers","Button-down + sweater vest + trousers + loafers","Unstructured jacket + oxford shirt + dark denim + derbies"],
+   examples:["Client call day: navy blazer, grey knit, chinos, leather sneakers.","Team offsite: oxford shirt, chinos, suede loafers, no jacket.","Casual Friday: crewneck sweater, dark denim, derbies."],
+   palette:["#20242a","#5a5347","#8a7f68","#b8ac8e","#e9e2cf"], formality:3, boldness:2, budget:"mid", lifestyle:["corporate","hybrid"], goal:["work","everyday"], impression:["approachable","disciplined"], character:["pragmatic","reserved"],
+   comfort:4, professionalism:3, dailyWearability:5,
+   adaptTips:["Swap the blazer for a soft, unstructured version on long days — it holds the look with far less weight.","This is close to the most comfortable end of gentleman dress that still reads professional five days a week."]},
+
+  {id:"countrygentleman", roman:"VII", name:"Country Gentleman", tagline:"Tweed, tradition and the English countryside register.",
+   compatibility:"Suits country weekends, shooting and racing events, and any office with a traditional, heritage-leaning culture. Works especially well on broader, sturdier builds the fabric was originally cut for. Reads out of place in modern urban offices or warm climates.",
+   history:"Rooted in 19th-century British estate dress — tweed's density and colour were chosen to withstand and camouflage within rural working conditions — before migrating into general countryside leisurewear and, eventually, into city tailoring as a textural choice.",
+   shopping:"Buy tweed heavier than feels necessary — a lightweight tweed loses the texture that makes the register recognisable. A tweed jacket, a flat cap and a pair of brogues form the core; everything else layers around them.",
+   whoSuits:["Suits sturdier, broader builds especially well — the fabric was cut for outdoor estate work.","Leaner frames should size down rather than layering extra bulk to compensate.","Taller builds carry the longer traditional jacket length most naturally."],
+   mistakes:["Choosing a tweed too lightweight to hold the silhouette's structure.","Wearing the full countryside kit in an urban, non-rural context without softening it.","Pairing tweed with high-shine city shoes instead of brogues or boots."],
+   signature:["Tweed jacket","Flat cap","Waistcoat in a contrasting check","Moleskin or cord trousers","Brogues"],
+   icons:"English estate weekends, country racing meets, the heritage-tailoring image that predates and outlasts most trends.",
+   rules:["Pattern can be bold here — tweed's texture absorbs it better than smoother fabrics.","Brogues or boots only; this register rejects high-shine city shoes.","Layering is expected — waistcoat, jacket and sometimes an overcoat together.","Keep it to its context; full countryside dress reads costume-like in a city office."],
+   templates:["Tweed jacket + waistcoat + cord trousers + brogues","Flat cap + tweed jacket + roll-neck for a more casual register","Full three-piece tweed for formal countryside events"],
+   examples:["Country weekend: tweed jacket, cord trousers, brogues.","Race day: three-piece tweed, flat cap.","Mild city adaptation: tweed jacket over jeans, boots."],
+   palette:["#3a3326","#5c4f36","#8a7a54","#b9a876","#e7ded0"], formality:2.5, boldness:2.5, budget:"mid", lifestyle:["social","everyday"], goal:["everyday","timeless"], impression:["calm","approachable"], character:["traditional","adventurous"],
+   comfort:4, professionalism:2, dailyWearability:4,
+   adaptTips:["Tweed softens with wear — a new jacket will feel stiffer than a seasoned one, so break it in on lower-stakes days first.","Reserve the full tweed-on-tweed look for weekends; one piece integrated into business casual works daily."]},
+
+  {id:"oldmoney", roman:"VIII", name:"Old Money Gentleman", tagline:"Wealth signalled through fabric, never through logos.",
+   compatibility:"Suits people who want to look established rather than trendy: private clubs, family events, formal social circles. Works on most frames when tailored close to the body. Feels stiff in genuinely casual or youth-driven settings.",
+   history:"Traces to old East Coast and European aristocratic dress, popularised through mid-century prep houses and revived as a style conversation in reaction against logo-driven fashion.",
+   shopping:"Buy fewer, better pieces in muted colours with no visible branding: cashmere, tweed, cotton poplin and suede in camel, navy, cream and forest green. Vintage often delivers the fabric quality this style depends on far below retail.",
+   whoSuits:["Suits most frames when pieces are tailored close to the body rather than bought loose.","Broader frames read especially well in cable-knits and structured tailoring.","Younger or slighter frames should size trousers and blazers down rather than layering oversized pieces."],
+   mistakes:["Choosing anything with a visible logo.","Reaching for trend colours instead of the muted core palette.","Buying everything new when vintage often has better fabric for less."],
+   signature:["Cable-knit sweater","Oxford shirt","Camel or navy trousers","Penny loafers","Simple gold or leather accessories"],
+   icons:"The unhurried polish of old sailing clubs, a country weekend wardrobe passed down rather than bought new.",
+   rules:["No visible logos, ever, on any piece.","Colours stay muted: camel, navy, cream, forest, oxblood.","Accessories are old or look old: leather, horn, gold.","Fit is close but never tight, structure over trend."],
+   templates:["Polo + tailored trousers + loafers, no socks","Cable-knit sweater + oxford shirt + wool trousers + derbies","Blazer + turtleneck + wool trousers + suede boots"],
+   examples:["Country club lunch: navy polo, camel trousers, loafers.","Family dinner: cream sweater, oxford collar, wool trousers.","Weekend in the city: blazer, turtleneck, grey trousers."],
+   palette:["#2b2620","#5c4a2e","#8a7047","#c2a06b","#e8ddc7"], formality:3.5, boldness:1.5, budget:"premium", lifestyle:["social","corporate"], goal:["brand","timeless"], impression:["calm","authoritative"], character:["traditional","reserved"],
+   comfort:4, professionalism:3, dailyWearability:4,
+   adaptTips:["Cashmere in place of wool lightens the formality without losing the quiet-luxury read.","The cleaner, closer-fitted pieces here wear easily daily — the heavier knitwear is better kept to cooler, lower-key days."]},
+
+  {id:"theDon", roman:"IX", name:"The Don", tagline:"Sharp, deliberate tailoring built to command a room — a style as much cinematic as historical.",
+   compatibility:"Works for anyone wanting tailoring to read as a statement of presence rather than quiet professionalism — creative industries, personal-brand photography, evening social settings. Rarely appropriate in conservative corporate environments, where its boldness reads as costume.",
+   history:"A cinematic and cultural style as much as a historical one, assembled from several distinct traditions: the pinstriped double-breasted suits of 1920s–30s American organised-crime depictions, the darker, more restrained tailoring associated with Sicilian and Italian film portrayals, the sharp minimalist suiting tied to Japanese Yakuza cinema, and the leather coats and heavy gold jewellery of post-Soviet Russian crime-drama style. Each tradition is distinct, but together they form a recognisable, widely referenced style family in menswear discussion — tailoring used deliberately as signal rather than quiet professionalism.",
+   shopping:"Fabric weight and drape matter more here than anywhere else — a stiff suit reads costume, a well-draped one reads deliberate. Invest in one strong double-breasted piece rather than several cheaper ones; this register depends entirely on the quality of its single statement.",
+   whoSuits:["Suits broader, more structured builds especially well — the double-breasted cut was built to add presence.","Leaner frames should have the shoulder and chest lightly padded rather than left unstructured.","Taller builds carry the longer traditional cut most naturally; shorter builds should shorten the jacket slightly."],
+   mistakes:["Choosing a stiff, cheap fabric that reads as a costume rather than tailoring.","Over-accessorising with several loud pieces at once instead of one deliberate statement.","Wearing it in a conservative business context where it reads as mismatched to the room."],
+   signature:["Double-breasted pinstripe suit","Wide-spread collar shirt","Silk tie or none, collar open","Dark overcoat","Polished oxfords"],
+   icons:"A century of gangster cinema across continents — American, Italian, Japanese and Russian film traditions each contributing a distinct variation on the same underlying idea: tailoring as deliberate presence.",
+   rules:["One statement silhouette choice — double-breasted or dramatic lapel — not several competing ones.","Fabric drape matters more than pattern; a stiff suit undercuts the whole look.","Keep accessories to one strong piece: a signet ring, a pocket watch chain, not both.","This register is a deliberate choice for specific moments, not an everyday uniform."],
+   templates:["Double-breasted pinstripe suit + open-collar shirt + dark overcoat","Fitted suit + minimal accessories for the sharper, Japanese-influenced reading","Leather overcoat + dark suit + heavier jewellery for the bolder, more maximalist reading"],
+   examples:["Evening event wanting presence: double-breasted pinstripe, open collar, overcoat.","Personal-brand photography: fitted dark suit, minimal accessories, strong silhouette.","Cold-weather statement: leather overcoat over a dark suit."],
+   palette:["#111113","#2a2a30","#6b5a3a","#9c8249","#e7e2d6"], formality:3.5, boldness:4, budget:"mid", lifestyle:["creative","social"], goal:["brand","standout"], impression:["magnetic","authoritative"], character:["rebellious","expressive"],
+   comfort:2, professionalism:3, dailyWearability:2,
+   adaptTips:["A softer-shouldered version of the silhouette keeps the drama without the stiffness of full canvas construction.","This reads as a deliberate statement rather than daily wear — save the double-breasted, pinstriped version for nights you want to be remembered."]},
+
+  {id:"dandy", roman:"X", name:"The Dandy", tagline:"Flamboyant, pattern-rich tailoring — the peacock end of gentleman dress.",
+   compatibility:"Suits creative industries, personal styling, events and anyone who wants tailoring itself to be a form of self-expression. Works on any build, since the register is defined by colour and pattern choices rather than silhouette. Reads as too loud for conservative business or quiet-luxury contexts.",
+   history:"Traces to the original Regency dandies — Beau Brummell and his contemporaries — who turned precise, deliberate dress into a social performance, and resurfaces in cycles whenever menswear reacts against a period of excessive restraint.",
+   shopping:"Buy fewer safe pieces and more that genuinely excite you — this register rewards a wardrobe built around enthusiasm rather than caution. Seek out pattern and colour that most shops keep in the background of their rails.",
+   whoSuits:["Suits any build, since the register is built from colour and pattern choice rather than silhouette correction.","Slighter frames can go bolder without the look overwhelming the body.","Broader frames should keep pattern scale larger so detail doesn't shrink the overall silhouette."],
+   mistakes:["Mixing too many unrelated patterns without a shared colour thread between them.","Choosing bold pieces in poor fabric — this register depends on quality to avoid reading costume-like.","Going full maximalist every single day; the effect depends partly on it still being a choice."],
+   signature:["Patterned or coloured suit","Contrast waistcoat","Silk pocket square","Patterned socks","Statement tie or cravat"],
+   icons:"Regency dandyism and Beau Brummell's original social performance through dress, and every tailoring movement since that treats getting dressed as a creative act rather than a formality.",
+   rules:["Keep one unifying colour thread through an otherwise bold combination.","Fabric quality matters more here than in quieter registers — cheap fabric undercuts boldness fast.","One truly loud element per outfit is usually enough; two can still work if their colours relate.","This register rewards confidence — hesitation reads more than the clothing does."],
+   templates:["Patterned suit + contrast waistcoat + silk pocket square","Bold tie or cravat + otherwise classic tailoring as a single focal point","Full peacock combination for events specifically built to be remembered"],
+   examples:["Creative industry event: patterned suit, contrast waistcoat, pocket square.","Wedding guest: bold tie, classic suit, patterned socks.","Personal styling shoot: full peacock combination, head to toe."],
+   palette:["#2c1f3d","#7a3b63","#c97b3c","#e4c25a","#f4ede0"], formality:3, boldness:4.5, budget:"mid", lifestyle:["creative","social"], goal:["brand","standout"], impression:["creative","magnetic"], character:["expressive","rebellious"],
+   comfort:3, professionalism:2, dailyWearability:2,
+   adaptTips:["Keep pattern-mixing to one bold element a day if daily wear is the goal — save full combinations for events.","Comfort here depends entirely on fabric choice — a dandy silhouette in a soft wool wears nothing like the same cut in a stiff one."]}
+];
+
+var FIT_TIPS = {
+  shoulders:"Balance shoulders: choose structured shoulders on top, keep bottoms streamlined so the eye reads width up top intentionally rather than by accident.",
+  legs:"Elongate legs: go high-rise, match trouser and shoe tone, and keep the break at the shoe minimal or absent.",
+  waist:"Define the waist: use tailored waists, a visible belt, or a tucked layer rather than boxy, unstructured pieces.",
+  structure:"Add structure: lean on blazers, structured jackets and firmer fabrics over soft, unstructured knits.",
+  comfort:"Comfort first: choose soft tailoring and stretch fabrics cut close enough to still hold a clean line."
+};
+
+var OCCASIONS = [
+  {id:"work", label:"Work", formulas:["Blazer + oxford shirt + wool trousers + leather derbies","Blazer + knit polo + chinos + leather sneakers","Suit separates + shirt + no tie + loafers"]},
+  {id:"date", label:"Date", formulas:["Knit polo + tailored trousers + loafers","Overshirt + white tee + dark denim + clean sneakers","Turtleneck + wool trousers + suede boots"]},
+  {id:"weekend", label:"Weekend", formulas:["Crewneck tee + straight trouser + sneaker","Rugby shirt + chinos + boat shoes","Hoodie + tapered joggers + clean trainers"]},
+  {id:"travel", label:"Travel", formulas:["Blazer + tee + chinos + minimal trainers","Zip jacket + tee + tapered sweats + sneakers","Overshirt + tee + straight trouser + sneaker"]},
+  {id:"event", label:"Event / night out", formulas:["Black turtleneck, tailored trousers, single gold watch","Bomber + fitted tee + tapered joggers + sneakers","Blazer + gingham shirt + shorts + boat shoes"]}
+];
+
+var OUTFIT_EXAMPLES = [
+  {title:"Monday client meeting", palette:["#14141a","#f1ebde","#4a4238"], items:["Navy blazer","White oxford shirt","Grey wool trousers","Brown derbies"]},
+  {title:"First date, mid-range restaurant", palette:["#1c1b1f","#e3dac4","#7d7364"], items:["Knit polo","Tailored trousers","Suede loafers, no socks"]},
+  {title:"Studio / creative day", palette:["#111112","#c94f3c","#f2efe9"], items:["Graphic hoodie","Cargo pants","High-top sneakers"]},
+  {title:"Weekend travel day", palette:["#15171a","#93999e","#dcdfe1"], items:["Zip jacket","Plain tee","Tapered sweatpants","Clean trainers"]},
+  {title:"Garden party in summer", palette:["#16223a","#c2452f","#f4efe0"], items:["Rugby shirt","White chinos","Boat shoes"]},
+  {title:"Rainy city commute", palette:["#101314","#4d5b5c","#c7cec9"], items:["Hardshell jacket","Technical trouser","Waterproof sneaker"]}
+];
+
+/* ---------------- Storage ---------------- */
+var STORE_KEY = "modernStyleManualProfile_v1";
+function loadProfile(){
+  try{
+    var raw = localStorage.getItem(STORE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  }catch(e){ return null; }
+}
+function saveProfile(p){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(p)); }catch(e){}
+}
+var profile = loadProfile() || {name:"", goal:"", budget:"", capsule:{}, blueprint:null};
+
+/* ---------------- Onboarding ---------------- */
+var onboardPanel = document.getElementById("onboard-panel");
+var landing = document.getElementById("view-landing");
+var appShell = document.getElementById("app");
+var onboardStep = 1;
+
+document.getElementById("btn-begin").addEventListener("click", function(){
+  landing.classList.add("hide");
+  onboardPanel.classList.remove("hide");
+});
+
+function setOnboardStep(n){
+  onboardStep = n;
+  document.querySelectorAll(".onboard-step").forEach(function(s){
+    s.classList.toggle("active", parseInt(s.getAttribute("data-step"),10) === n);
+  });
+}
+
+document.getElementById("in-name").addEventListener("input", function(e){
+  document.getElementById("step1-next").disabled = e.target.value.trim().length === 0;
+});
+document.getElementById("step1-next").addEventListener("click", function(){
+  profile.name = document.getElementById("in-name").value.trim();
+  setOnboardStep(2);
+});
+
+function wireChoiceGrid(containerId, nextBtnId, field){
+  var container = document.getElementById(containerId);
+  container.querySelectorAll(".choice").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      container.querySelectorAll(".choice").forEach(function(b){ b.classList.remove("selected"); });
+      btn.classList.add("selected");
+      profile[field] = btn.getAttribute("data-val");
+      document.getElementById(nextBtnId).disabled = false;
+    });
+  });
+}
+wireChoiceGrid("goal-choices", "step2-next", "goal");
+wireChoiceGrid("wardrobe-choices", "step3-next", "wardrobeState");
+wireChoiceGrid("effort-choices", "step4-next", "effort");
+wireChoiceGrid("budget-choices", "step5-next", "budget");
+wireChoiceGrid("tone-choices", "step6-done", "tone");
+
+document.getElementById("step2-next").addEventListener("click", function(){ setOnboardStep(3); });
+document.getElementById("step3-next").addEventListener("click", function(){ setOnboardStep(4); });
+document.getElementById("step4-next").addEventListener("click", function(){ setOnboardStep(5); });
+document.getElementById("step5-next").addEventListener("click", function(){ setOnboardStep(6); });
+document.getElementById("step6-done").addEventListener("click", function(){
+  saveProfile(profile);
+  onboardPanel.classList.add("hide");
+  bootApp();
+});
+
+/* ---------------- Restart ---------------- */
+document.getElementById("btn-restart").addEventListener("click", function(){
+  try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+  location.reload();
+});
+
+/* ---------------- App boot / routing ---------------- */
+function bootApp(){
+  appShell.classList.remove("hide");
+  document.getElementById("nav-name").textContent = "Hi, " + (profile.name || "there");
+  document.getElementById("home-greeting").textContent = "Hello, " + (profile.name || "there") + ".";
+  buildCodex();
+  buildFramework();
+  buildQuiz();
+  buildGlossary();
+  wireNav();
+  goView("home");
+}
+
+function wireNav(){
+  document.querySelectorAll(".side-nav button").forEach(function(btn){
+    btn.addEventListener("click", function(){ goView(btn.getAttribute("data-view")); });
+  });
+  document.querySelectorAll(".module-row").forEach(function(row){
+    row.addEventListener("click", function(){ goView(row.getAttribute("data-goto")); });
+  });
+  var sidebar = document.getElementById("app-sidebar");
+  var toggle = document.getElementById("sidebar-toggle");
+  if(profile.sidebarCollapsed){ sidebar.classList.add("collapsed"); toggle.textContent = "›"; }
+  toggle.addEventListener("click", function(){
+    var collapsed = sidebar.classList.toggle("collapsed");
+    toggle.textContent = collapsed ? "›" : "‹";
+    profile.sidebarCollapsed = collapsed;
+    saveProfile(profile);
+  });
+}
+
+function goView(name){
+  ["home","codex","framework","blueprint","glossary"].forEach(function(v){
+    document.getElementById("view-" + v).classList.toggle("hide", v !== name);
+  });
+  document.querySelectorAll(".side-nav button").forEach(function(btn){
+    btn.classList.toggle("active", btn.getAttribute("data-view") === name);
+  });
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+  if(name === "home"){ renderJourney(); }
+}
+
+/* ---------------- Module I: Codex ---------------- */
+function budgetLabel(b){ return {accessible:"Accessible",mid:"Mid-range",premium:"Investment"}[b] || b; }
+
+function buildCodex(){
+  var toc = document.getElementById("codex-toc");
+  var panels = document.getElementById("codex-panels");
+  toc.innerHTML = ARCHETYPES.map(function(a, i){
+    return '<button data-idx="'+i+'" class="'+(i===0?"active":"")+'">'+a.roman+'. '+a.name+'</button>';
+  }).join("");
+
+  panels.innerHTML = ARCHETYPES.map(function(a, i){
+    var swatches = a.palette.map(function(c){ return '<div class="swatch" style="background:'+c+'"></div>'; }).join("");
+    var rules = a.rules.map(function(r){ return "<li>"+r+"</li>"; }).join("");
+    var templates = a.templates.map(function(t){ return "<li>"+t+"</li>"; }).join("");
+    var examples = a.examples.map(function(e){ return "<li>"+e+"</li>"; }).join("");
+    var whoSuits = a.whoSuits.map(function(w){ return "<li>"+w+"</li>"; }).join("");
+    var mistakes = a.mistakes.map(function(m){ return "<li>"+m+"</li>"; }).join("");
+    var signature = a.signature.map(function(sg){ return "<span>"+sg+"</span>"; }).join("");
+    var adaptTips = a.adaptTips.map(function(t){ return "<li>"+t+"</li>"; }).join("");
+    var prev = ARCHETYPES[(i-1+ARCHETYPES.length)%ARCHETYPES.length];
+    var next = ARCHETYPES[(i+1)%ARCHETYPES.length];
+    return (
+      '<div class="archetype-panel '+(i===0?"active":"")+'" data-idx="'+i+'">'+
+        '<div class="archetype-head">'+
+          '<div class="arch-roman">'+a.roman+'</div>'+
+          '<div><h2>'+a.name+'</h2><div class="tagline">'+a.tagline+'</div></div>'+
+        '</div>'+
+        '<div class="page-divider first"><small>Page I</small><b>The Style</b></div>'+
+        '<div class="quick-facts-row">'+
+          '<span>Formality <b>'+a.formality+' / 5</b></span>'+
+          '<span>Boldness <b>'+a.boldness+' / 5</b></span>'+
+          '<span>Budget <b>'+budgetLabel(a.budget)+'</b></span>'+
+        '</div>'+
+        '<div class="palette-row">'+swatches+'</div>'+
+        '<div class="arch-block" style="margin-bottom:30px;"><h4>Who it suits</h4><ul>'+whoSuits+'</ul></div>'+
+        '<div class="arch-grid">'+
+          '<div class="arch-block"><h4>Compatibility</h4><p>'+a.compatibility+'</p></div>'+
+          '<div class="arch-block"><h4>History</h4><p>'+a.history+'</p></div>'+
+          '<div class="arch-block"><h4>Shopping guide</h4><p>'+a.shopping+'</p></div>'+
+          '<div class="arch-block"><h4>Signature pieces</h4><div class="pill-list">'+signature+'</div></div>'+
+          '<div class="arch-block"><h4>Rules</h4><ul>'+rules+'</ul></div>'+
+          '<div class="arch-block"><h4>Common mistakes</h4><ul class="mistake-list">'+mistakes+'</ul></div>'+
+          '<div class="arch-block"><h4>Templates</h4><ul>'+templates+'</ul></div>'+
+          '<div class="arch-block"><h4>Examples</h4><ul>'+examples+'</ul></div>'+
+          '<div class="arch-block full icons"><h4>Style reference points</h4><p>'+a.icons+'</p></div>'+
+        '</div>'+
+        '<div class="page-divider"><small>Page II</small><b>Your Fit</b></div>'+
+        '<p class="fit-intro">Set these to what you actually need, and see how '+a.name+' measures up against it.</p>'+
+        '<div class="fit-sliders">'+
+          '<div class="fit-slider-row"><label><span>Comfort you need</span><span class="fit-val" data-k="comfort">3</span></label><input type="range" class="fit-range" data-k="comfort" min="1" max="5" step="1" value="3"></div>'+
+          '<div class="fit-slider-row"><label><span>Professionalism you need</span><span class="fit-val" data-k="professionalism">3</span></label><input type="range" class="fit-range" data-k="professionalism" min="1" max="5" step="1" value="3"></div>'+
+          '<div class="fit-slider-row"><label><span>How often it would be worn</span><span class="fit-val" data-k="dailyWearability">3</span></label><input type="range" class="fit-range" data-k="dailyWearability" min="1" max="5" step="1" value="3"></div>'+
+        '</div>'+
+        '<div class="fit-verdict"></div>'+
+        '<div class="arch-block" style="margin-bottom:10px;"><h4>Adapting it to you</h4><ul>'+adaptTips+'</ul></div>'+
+        '<div class="chapter-nav">'+
+          '<button class="prev" data-nav="'+((i-1+ARCHETYPES.length)%ARCHETYPES.length)+'"><span>Previous</span>'+prev.roman+'. '+prev.name+'</button>'+
+          '<button class="next" data-nav="'+((i+1)%ARCHETYPES.length)+'"><span>Next</span>'+next.roman+'. '+next.name+'</button>'+
+        '</div>'+
+      '</div>'
+    );
+  }).join("");
+
+  function computeFitVerdict(a, c, p, w){
+    var dist = Math.abs(a.comfort-c) + Math.abs(a.professionalism-p) + Math.abs(a.dailyWearability-w);
+    if(dist <= 2) return "Strong match — this register sits close to what you need.";
+    if(dist <= 5) return "Workable with adjustments — see the adaptation notes below.";
+    return "Better reserved for occasional wear than a daily rotation — still worth knowing for the right moment.";
+  }
+  panels.querySelectorAll(".archetype-panel").forEach(function(panelEl){
+    var idx = parseInt(panelEl.getAttribute("data-idx"),10);
+    var a = ARCHETYPES[idx];
+    var verdictEl = panelEl.querySelector(".fit-verdict");
+    var ranges = panelEl.querySelectorAll(".fit-range");
+    function updateFit(){
+      var vals = {};
+      ranges.forEach(function(r){
+        var k = r.getAttribute("data-k");
+        vals[k] = parseInt(r.value,10);
+        panelEl.querySelector('.fit-val[data-k="'+k+'"]').textContent = r.value;
+      });
+      verdictEl.textContent = computeFitVerdict(a, vals.comfort, vals.professionalism, vals.dailyWearability);
+    }
+    ranges.forEach(function(r){ r.addEventListener("input", updateFit); });
+    updateFit();
+  });
+
+  var codexMode = profile.codexMode === "scroll" ? "scroll" : "chapter";
+  function applyCodexMode(){
+    panels.classList.toggle("scroll-all", codexMode === "scroll");
+    document.querySelectorAll(".ebook-toggle button").forEach(function(b){
+      b.classList.toggle("active", b.getAttribute("data-mode") === codexMode);
+    });
+  }
+  applyCodexMode();
+  document.querySelectorAll(".ebook-toggle button").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      codexMode = btn.getAttribute("data-mode");
+      profile.codexMode = codexMode;
+      saveProfile(profile);
+      applyCodexMode();
+    });
+  });
+
+  function openArchetype(idx){
+    profile.codexViewed = profile.codexViewed || {};
+    profile.codexViewed[ARCHETYPES[idx].id] = true;
+    saveProfile(profile);
+    if(codexMode === "scroll"){
+      var target = panels.querySelector('.archetype-panel[data-idx="'+idx+'"]');
+      if(target) target.scrollIntoView({block:"start", behavior:"smooth"});
+      return;
+    }
+    toc.querySelectorAll("button").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-idx")===String(idx)); });
+    panels.querySelectorAll(".archetype-panel").forEach(function(p2){
+      p2.classList.toggle("active", p2.getAttribute("data-idx") === String(idx));
+    });
+    document.getElementById("view-codex").scrollIntoView({block:"start"});
+  }
+  codexOpenChapter = openArchetype;
+  panels.querySelectorAll(".chapter-nav button").forEach(function(btn){
+    btn.addEventListener("click", function(){ openArchetype(parseInt(btn.getAttribute("data-nav"),10)); });
+  });
+
+  toc.querySelectorAll("button").forEach(function(btn){
+    btn.addEventListener("click", function(){ openArchetype(parseInt(btn.getAttribute("data-idx"),10)); });
+  });
+
+  wireQuickMatch();
+}
+
+var codexOpenChapter = null;
+
+function wireQuickMatch(){
+  var fSlider = document.getElementById("qm-formality");
+  var bSlider = document.getElementById("qm-boldness");
+  var fVal = document.getElementById("qm-f-val");
+  var bVal = document.getElementById("qm-b-val");
+  var resultText = document.getElementById("qm-result-text");
+  var jumpBtn = document.getElementById("qm-jump");
+  var bestIdx = 0;
+
+  function update(){
+    var f = parseFloat(fSlider.value), b = parseFloat(bSlider.value);
+    fVal.textContent = f.toFixed(1);
+    bVal.textContent = b.toFixed(1);
+    var scored = ARCHETYPES.map(function(a,i){
+      var d = Math.abs(a.formality-f) + Math.abs(a.boldness-b);
+      return {i:i, d:d, a:a};
+    }).sort(function(x,y){ return x.d-y.d; });
+    bestIdx = scored[0].i;
+    resultText.innerHTML = "Closest match: <b>"+scored[0].a.roman+". "+scored[0].a.name+"</b> — also close: "+scored[1].a.name+".";
+  }
+  fSlider.addEventListener("input", update);
+  bSlider.addEventListener("input", update);
+  jumpBtn.addEventListener("click", function(){
+    if(codexOpenChapter) codexOpenChapter(bestIdx);
+  });
+  update();
+}
+
+/* ---------------- Module II: Framework ---------------- */
+var PATTERNS = ["Solid","Stripe","Check","Floral","Heavy texture","Shine (leather/satin)"];
+var COMPAT = {
+  "Solid|Solid":{ok:true, note:"Always safe — two solids can never clash, only contrast in colour."},
+  "Solid|Stripe":{ok:true, note:"Safe. The solid gives the eye somewhere to rest."},
+  "Check|Solid":{ok:true, note:"Safe, for the same reason as stripe plus solid."},
+  "Floral|Solid":{ok:true, note:"Safe — let the floral be the only pattern in the outfit."},
+  "Heavy texture|Solid":{ok:true, note:"Safe. A textured piece reads as detail, not pattern."},
+  "Shine (leather/satin)|Solid":{ok:true, note:"Safe, and often the cleanest way to add shine."},
+  "Stripe|Stripe":{ok:false, note:"Only works if the scale differs noticeably — a thin pinstripe against a wide rugby stripe reads as two separate elements."},
+  "Check|Stripe":{ok:false, note:"Risky. Two directional patterns compete unless their colours match closely."},
+  "Floral|Stripe":{ok:false, note:"Risky. Both are busy; keep one dominant and the other reduced to a small accent."},
+  "Heavy texture|Stripe":{ok:true, note:"Safe — texture isn't a directional pattern, so it pairs fine."},
+  "Shine (leather/satin)|Stripe":{ok:true, note:"Safe. Shine reads as texture, not competing pattern."},
+  "Check|Check":{ok:false, note:"Only if scale and colourway differ significantly, otherwise it reads chaotic."},
+  "Check|Floral":{ok:false, note:"Risky for the same reason as check plus stripe — two patterns fighting for attention."},
+  "Check|Heavy texture":{ok:true, note:"Safe. Texture supports a check without competing with it."},
+  "Check|Shine (leather/satin)":{ok:true, note:"Safe — a classic smart-casual contrast."},
+  "Floral|Floral":{ok:false, note:"Two florals rarely coexist. Pick one as the statement and keep everything else plain."},
+  "Floral|Heavy texture":{ok:true, note:"Safe. Texture grounds a floral rather than competing with it."},
+  "Floral|Shine (leather/satin)":{ok:true, note:"Safe, and a good way to dress a floral piece up."},
+  "Heavy texture|Heavy texture":{ok:false, note:"Two heavy textures stack visual and physical weight — better reserved for layered cold-weather looks only."},
+  "Heavy texture|Shine (leather/satin)":{ok:true, note:"A classic contrast pairing — matte wool against leather reads intentional, not accidental."},
+  "Shine (leather/satin)|Shine (leather/satin)":{ok:false, note:"Too much sheen at once reads costume-like. Balance with at least one matte piece."}
+};
+function compatKey(a,b){ return [a,b].sort().join("|"); }
+
+function buildCompatPicker(){
+  var selA = document.getElementById("compat-a");
+  var selB = document.getElementById("compat-b");
+  var out = document.getElementById("compat-verdict");
+  var opts = PATTERNS.map(function(p){ return '<option value="'+p+'">'+p+'</option>'; }).join("");
+  selA.innerHTML = opts;
+  selB.innerHTML = opts;
+  selB.selectedIndex = 1;
+  function update(){
+    var a = selA.value, b = selB.value;
+    var v = COMPAT[compatKey(a,b)];
+    if(!v){ out.innerHTML = "No data for that pairing yet."; return; }
+    out.innerHTML = '<span class="'+(v.ok?"tag-ok":"tag-risk")+'">'+(v.ok?"Safe":"Risky")+'</span> — '+v.note;
+  }
+  selA.addEventListener("change", update);
+  selB.addEventListener("change", update);
+  update();
+}
+
+function buildFramework(){
+  // tabs
+  document.querySelectorAll("#framework-tabs button").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var fw = btn.getAttribute("data-fw");
+      document.querySelectorAll("#framework-tabs button").forEach(function(b){ b.classList.toggle("active", b===btn); });
+      document.querySelectorAll(".fw-panel").forEach(function(p){ p.classList.toggle("active", p.getAttribute("data-fw")===fw); });
+    });
+  });
+
+  buildCompatPicker();
+
+  // fit slider
+  var slider = document.getElementById("fit-slider");
+  var valLabel = document.getElementById("fit-slider-val");
+  var topRect = document.getElementById("prop-top");
+  var bottomRect = document.getElementById("prop-bottom");
+  var feedback = document.getElementById("proportion-feedback");
+  function updateProportion(){
+    var v = parseInt(slider.value, 10);
+    valLabel.textContent = v + "%";
+    var h = 220 * (v/100);
+    topRect.setAttribute("height", h);
+    bottomRect.setAttribute("y", h);
+    bottomRect.setAttribute("height", 220-h);
+    var msg;
+    if(v >= 36 && v <= 44){ msg = "Balanced — close to a one-third, two-thirds split, the most reliably flattering ratio."; }
+    else if(v >= 30 && v <= 50){ msg = "Workable — still reads intentional, especially with a tucked or half-tucked layer."; }
+    else if(v < 30){ msg = "Very cropped — striking, but pair with a longer, cleaner bottom line to stay balanced."; }
+    else { msg = "Close to a 50/50 split — try tucking in, or choosing a shorter top, to shift toward one-third, two-thirds."; }
+    feedback.textContent = msg;
+  }
+  slider.addEventListener("input", updateProportion);
+  updateProportion();
+
+  // body priority tips
+  var bp = profile.blueprint && profile.blueprint.bodyPriority;
+  var tipsList = document.getElementById("body-priority-tips");
+  if(bp && FIT_TIPS[bp]){
+    tipsList.innerHTML = "<li>"+FIT_TIPS[bp]+"</li>";
+  } else {
+    tipsList.innerHTML = Object.keys(FIT_TIPS).map(function(k){ return "<li>"+FIT_TIPS[k]+"</li>"; }).join("");
+  }
+
+  // color wheel
+  buildColorWheel();
+
+  // capsule
+  buildCapsule();
+
+  // occasion formulas
+  var occTabs = document.getElementById("occasion-tabs");
+  var occFormulas = document.getElementById("occasion-formulas");
+  occTabs.innerHTML = OCCASIONS.map(function(o,i){ return '<button data-occ="'+o.id+'" class="'+(i===0?"active":"")+'">'+o.label+'</button>'; }).join("");
+  function renderOcc(id){
+    var occ = OCCASIONS.filter(function(o){ return o.id===id; })[0];
+    occFormulas.innerHTML = occ.formulas.map(function(f){ return '<div class="formula-card">'+f+'</div>'; }).join("");
+  }
+  occTabs.querySelectorAll("button").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      occTabs.querySelectorAll("button").forEach(function(b){ b.classList.toggle("active", b===btn); });
+      renderOcc(btn.getAttribute("data-occ"));
+    });
+  });
+  renderOcc(OCCASIONS[0].id);
+
+  // outfit examples
+  document.getElementById("outfit-examples").innerHTML = OUTFIT_EXAMPLES.map(function(o){
+    var sw = o.palette.map(function(c){ return '<div class="swatch" style="background:'+c+'; width:22px; height:22px;"></div>'; }).join("");
+    var items = o.items.map(function(i){ return "<li>"+i+"</li>"; }).join("");
+    return '<div class="outfit-card"><div class="palette-row">'+sw+'</div><h4>'+o.title+'</h4><ul>'+items+'</ul></div>';
+  }).join("");
+}
+
+function hslToHex(h,s,l){
+  s/=100; l/=100;
+  var c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m=l-c/2, r,g,b;
+  if(h<60){r=c;g=x;b=0;} else if(h<120){r=x;g=c;b=0;} else if(h<180){r=0;g=c;b=x;}
+  else if(h<240){r=0;g=x;b=c;} else if(h<300){r=x;g=0;b=c;} else {r=c;g=0;b=x;}
+  var toHex=function(v){ var h2=Math.round((v+m)*255).toString(16); return h2.length===1 ? "0"+h2 : h2; };
+  return "#"+toHex(r)+toHex(g)+toHex(b);
+}
+
+function buildColorWheel(){
+  var svg = document.getElementById("color-wheel");
+  var cx=110, cy=110, rOuter=100, rInner=46;
+  var segments = 12;
+  var paths = "";
+  for(var i=0;i<segments;i++){
+    var a0 = (i/segments)*2*Math.PI - Math.PI/2;
+    var a1 = ((i+1)/segments)*2*Math.PI - Math.PI/2;
+    var hue = Math.round((i/segments)*360);
+    var x0o=cx+rOuter*Math.cos(a0), y0o=cy+rOuter*Math.sin(a0);
+    var x1o=cx+rOuter*Math.cos(a1), y1o=cy+rOuter*Math.sin(a1);
+    var x0i=cx+rInner*Math.cos(a0), y0i=cy+rInner*Math.sin(a0);
+    var x1i=cx+rInner*Math.cos(a1), y1i=cy+rInner*Math.sin(a1);
+    var d = "M"+x0o+","+y0o+" A"+rOuter+","+rOuter+" 0 0 1 "+x1o+","+y1o+" L"+x1i+","+y1i+" A"+rInner+","+rInner+" 0 0 0 "+x0i+","+y0i+" Z";
+    paths += '<path d="'+d+'" fill="'+hslToHex(hue,62,52)+'" data-hue="'+hue+'"></path>';
+  }
+  svg.innerHTML = paths;
+  svg.querySelectorAll("path").forEach(function(p){
+    p.addEventListener("click", function(){
+      var hue = parseInt(p.getAttribute("data-hue"),10);
+      renderWheelOutput(hue);
+    });
+  });
+}
+
+function renderWheelOutput(hue){
+  document.getElementById("wheel-picked").textContent = "Base hue " + hue + "\u00B0 selected.";
+  var base = hslToHex(hue,55,42);
+  var comp = hslToHex((hue+180)%360,55,42);
+  var an1 = hslToHex((hue+30)%360,50,48);
+  var an2 = hslToHex((hue+330)%360,50,48);
+  document.getElementById("wheel-comp").innerHTML =
+    '<div class="swatch" style="background:'+base+'"></div><div class="swatch" style="background:'+comp+'"></div>';
+  document.getElementById("wheel-analog").innerHTML =
+    '<div class="swatch" style="background:'+an1+'"></div><div class="swatch" style="background:'+base+'"></div><div class="swatch" style="background:'+an2+'"></div>';
+  document.getElementById("wheel-neutral").innerHTML =
+    '<div class="swatch" style="background:#14141a"></div><div class="swatch" style="background:#f1ebde"></div>';
+}
+
+var CAPSULE = {
+  "Outerwear":["Wool overcoat or peacoat","Casual jacket (bomber, trucker or similar)","Rain-ready shell"],
+  "Tailoring & tops":["Versatile blazer","2-3 dress or oxford shirts","3-4 knitwear pieces","5+ plain tees or base layers"],
+  "Bottoms":["Dark wash jeans","Chinos, 2 colours","1 pair tailored trousers","Shorts for warm weather"],
+  "Footwear":["Leather derbies or oxfords","Clean minimal sneakers","Boots for cold or wet weather","Loafers"],
+  "Accessories":["Leather belt matching your shoes","Watch","Weather-appropriate scarf or hat"]
+};
+
+function buildCapsule(){
+  var container = document.getElementById("capsule-list");
+  var html = "";
+  var total = 0;
+  Object.keys(CAPSULE).forEach(function(cat){
+    html += '<div class="capsule-cat"><h4>'+cat+'</h4>';
+    CAPSULE[cat].forEach(function(item){
+      total++;
+      var key = cat+"::"+item;
+      var checked = profile.capsule && profile.capsule[key] ? "checked" : "";
+      html += '<label class="capsule-item '+(checked?"checked":"")+'" data-key="'+encodeURIComponent(key)+'"><input type="checkbox" '+checked+'><span>'+item+'</span></label>';
+    });
+    html += '</div>';
+  });
+  container.innerHTML = html;
+  document.getElementById("capsule-meter-label").textContent = "0 of " + total + " core pieces covered";
+  updateCapsuleMeter(total);
+  container.querySelectorAll(".capsule-item").forEach(function(row){
+    row.addEventListener("click", function(e){
+      var input = row.querySelector("input");
+      // allow the native click on checkbox to toggle first, then read state on next tick
+      setTimeout(function(){
+        var key = decodeURIComponent(row.getAttribute("data-key"));
+        profile.capsule = profile.capsule || {};
+        profile.capsule[key] = input.checked;
+        row.classList.toggle("checked", input.checked);
+        saveProfile(profile);
+        updateCapsuleMeter(total);
+      },0);
+    });
+  });
+}
+
+function updateCapsuleMeter(total){
+  var count = 0;
+  if(profile.capsule){ Object.keys(profile.capsule).forEach(function(k){ if(profile.capsule[k]) count++; }); }
+  document.getElementById("capsule-meter-label").textContent = count + " of " + total + " core pieces covered";
+  document.getElementById("capsule-meter-fill").style.width = Math.round((count/total)*100) + "%";
+}
+
+/* ---------------- Module III: Blueprint quiz ---------------- */
+/* ---------------- Arbiter: the framework library ---------------- */
+/* A working library of 30 framework notes. Arbiter (the Blueprint's assembly
+   engine) scores every entry against a person's budget, desired impression,
+   character and goal, then surfaces the best-matching six in their report. */
+var FRAMEWORK_LIBRARY = [
+  {id:"capsule-math", title:"The Capsule Math Framework", category:"Wardrobe Strategy",
+   body:"Cap your working wardrobe at roughly 30–40 pieces that all cross-combine. Fewer choices force better ones, and a wardrobe this size can run a two-week rotation without an obvious repeat.",
+   budget:["any"], impression:["disciplined","calm"], character:["pragmatic","reserved"], goal:["effortless","timeless"]},
+  {id:"cost-per-wear", title:"Cost-Per-Wear Filter", category:"Budget Strategy",
+   body:"Before buying, divide price by realistic wears over two years. A $400 coat worn 150 times costs less per wear than a $40 shirt worn eight times before it pills — buy for the denominator, not the sticker price.",
+   budget:["mid","premium"], impression:["disciplined"], character:["pragmatic"], goal:["timeless","work"]},
+  {id:"one-in-one-out", title:"One-In, One-Out Rule", category:"Budget Strategy",
+   body:"Every new piece retires one existing piece. It keeps the wardrobe at capsule size indefinitely and forces each purchase to justify itself against what it replaces, not just whether you like it in the mirror.",
+   budget:["accessible","mid"], impression:["disciplined"], character:["pragmatic","reserved"], goal:["effortless"]},
+  {id:"signature-color", title:"Signature Colour Anchor", category:"Colour",
+   body:"Pick one colour outside the basic neutrals that appears in at least a third of your wardrobe — a burgundy, forest green or navy. It becomes a visual signature people associate with you without you explaining it.",
+   budget:["any"], impression:["magnetic","authoritative"], character:["expressive","traditional"], goal:["brand","standout"]},
+  {id:"seasonal-rotation", title:"Two-Season Rotation", category:"Seasonal",
+   body:"Split the capsule into a warm-half and cold-half with a small shared middle layer set. Store the off-season half — a wardrobe you can see in full is one you actually use, rather than one buried behind clothes you're not wearing today.",
+   budget:["any"], impression:["calm","disciplined"], character:["pragmatic"], goal:["effortless","timeless"]},
+  {id:"grooming-baseline", title:"Grooming Baseline", category:"Grooming",
+   body:"Clothing reads as intentional or accidental partly based on grooming: clean nails, a defined hairline, pressed rather than merely clean fabric. A $40 outfit with sharp grooming outperforms a $400 outfit with neither.",
+   budget:["accessible"], impression:["authoritative","disciplined"], character:["pragmatic","traditional"], goal:["work","brand"]},
+  {id:"accessory-rule-of-one", title:"Rule of One Accessory", category:"Accessories",
+   body:"Wear at most one attention-seeking accessory at a time — a bold watch, a signet ring, a patterned pocket square. Two or more competing for attention reads as trying too hard rather than confident.",
+   budget:["mid","premium"], impression:["magnetic","authoritative"], character:["expressive"], goal:["standout","brand"]},
+  {id:"posture-tailoring", title:"Posture-First Tailoring", category:"Confidence",
+   body:"A jacket that sits correctly on the shoulders improves posture by default, and better posture reads as more confident before a single design choice is even judged. Fit the shoulders first, adjust everything else around that.",
+   budget:["any"], impression:["authoritative","calm"], character:["reserved","traditional"], goal:["work","timeless"]},
+  {id:"content-wardrobe", title:"On-Camera Wardrobe Rule", category:"Personal Brand",
+   body:"For video or photo content, avoid fine stripes and small busy patterns, which strobe on camera, and pick one recognisable element — a colour, a collar shape, glasses — repeated across your content so viewers place you instantly.",
+   budget:["any"], impression:["magnetic","creative"], character:["expressive"], goal:["brand","standout"]},
+  {id:"signature-silhouette", title:"Signature Silhouette Lock-In", category:"Personal Brand",
+   body:"Choose one proportion formula — say, cropped jacket plus wide trouser — and repeat it across most public appearances. A recognisable silhouette builds recall faster than a logo, at no extra cost to maintain.",
+   budget:["any"], impression:["magnetic","disciplined"], character:["expressive","pragmatic"], goal:["brand"]},
+  {id:"travel-capsule", title:"Carry-On Capsule", category:"Wardrobe Strategy",
+   body:"Build a 10-piece travel set in one tonal family so every top matches every bottom, and pack it as a fixed unit rather than reselecting each trip. It removes a decision you'd otherwise make under time pressure at 6am.",
+   budget:["any"], impression:["calm","disciplined"], character:["pragmatic"], goal:["effortless"]},
+  {id:"tailor-relationship", title:"Standing Tailor Relationship", category:"Shopping",
+   body:"Find one tailor and stay with them rather than shopping around each time. A tailor who knows your body adjusts faster and more accurately, and the relationship becomes a wardrobe asset in its own right over time.",
+   budget:["premium"], impression:["authoritative","calm"], character:["traditional"], goal:["timeless","work"]},
+  {id:"thrift-strategy", title:"Vintage &amp; Resale Sourcing", category:"Shopping",
+   body:"Search resale and vintage first for anything structural — coats, blazers, leather goods — where older construction often outperforms new fast-fashion equivalents at a fraction of the price. Save new-retail budget for fit-critical basics.",
+   budget:["accessible"], impression:["creative","calm"], character:["adventurous","pragmatic"], goal:["timeless","effortless"]},
+  {id:"color-story", title:"Three-Colour Story", category:"Colour",
+   body:"Restrict any single outfit to three colours including neutrals. A fourth colour almost always reads as a mistake rather than a choice, no matter how good each individual piece is on its own.",
+   budget:["any"], impression:["calm","disciplined"], character:["reserved","pragmatic"], goal:["everyday","timeless"]},
+  {id:"bold-color-rule", title:"Bold Colour, Quiet Cut", category:"Colour",
+   body:"When wearing a genuinely bold colour, keep the silhouette classic and unremarkable. Bold colour plus bold cut plus bold pattern reads as costume; bold colour plus quiet cut reads as confidence.",
+   budget:["any"], impression:["magnetic","creative"], character:["expressive","adventurous"], goal:["standout","brand"]},
+  {id:"shoe-first", title:"Shoe-First Budgeting", category:"Budget Strategy",
+   body:"Spend disproportionately on shoes relative to the rest of an outfit. Footwear is the first thing many people notice after the face, is hardest to fake with cheap materials, and lasts years with basic care.",
+   budget:["mid","premium"], impression:["authoritative","magnetic"], character:["traditional","pragmatic"], goal:["work","timeless"]},
+  {id:"layer-formula", title:"Three-Layer Formula", category:"Fit",
+   body:"Base layer, mid layer, outer layer — three is almost always enough for both warmth and visual depth. A fourth layer usually adds bulk without adding anything the eye reads as intentional.",
+   budget:["any"], impression:["calm","disciplined"], character:["pragmatic"], goal:["everyday"]},
+  {id:"confidence-anchor", title:"One Confidence Anchor", category:"Confidence",
+   body:"Keep one piece you feel unambiguously great in and reach for it before anything stressful — a pitch, a first date, a hard conversation. Confidence in the room usually reads louder than the outfit's actual formality.",
+   budget:["any"], impression:["magnetic","authoritative"], character:["expressive","rebellious"], goal:["standout","brand"]},
+  {id:"sunday-reset", title:"Sunday Wardrobe Reset", category:"Maintenance",
+   body:"Spend fifteen minutes weekly returning stray items to their place, checking for repairs, and queuing laundry. An organised wardrobe gets worn more evenly than one where the same five pieces sit in reach and the rest is forgotten.",
+   budget:["any"], impression:["disciplined","calm"], character:["pragmatic","reserved"], goal:["effortless"]},
+  {id:"texture-over-color", title:"Texture-Led Minimalism", category:"Colour",
+   body:"When the palette is restricted to neutrals, let fabric texture carry the visual interest instead — a nubby wool against smooth cotton, a matte knit against structured leather. Restraint in colour doesn't have to mean flatness.",
+   budget:["mid","premium"], impression:["calm","creative"], character:["reserved","pragmatic"], goal:["effortless","timeless"]},
+  {id:"statement-rotation", title:"Statement Piece Rotation", category:"Wardrobe Strategy",
+   body:"Own two or three genuinely loud pieces and rotate them rather than buying a new one each season. A single strong piece worn occasionally reads as personal style; five worn once each reads as impulse buying.",
+   budget:["mid"], impression:["creative","magnetic"], character:["expressive","rebellious"], goal:["standout","brand"]},
+  {id:"unconventional-mixing", title:"Deliberate Rule-Breaking", category:"Confidence",
+   body:"Once the fundamentals are solid, break exactly one rule per outfit on purpose — an unexpected colour pairing, a formal shoe with casual trousers. One intentional break reads as personal taste; several at once reads as not knowing the rules to begin with.",
+   budget:["any"], impression:["creative","magnetic"], character:["rebellious","adventurous"], goal:["standout","brand"]},
+  {id:"event-dress-code", title:"Dress-Code Decoder", category:"Occasion",
+   body:"When an invite lists an unfamiliar dress code, dress one notch more formal than your best guess rather than less — recovering from slightly overdressed is easier, and reads better, than the reverse in almost every room.",
+   budget:["any"], impression:["authoritative","approachable"], character:["traditional","reserved"], goal:["work","everyday"]},
+  {id:"first-impression", title:"Seven-Second Framework", category:"Confidence",
+   body:"Most people form a style impression in the first seven seconds, largely from fit, grooming and footwear condition, in that order — before colour or brand registers at all. Spend your attention budget on those three first.",
+   budget:["any"], impression:["authoritative","magnetic"], character:["pragmatic"], goal:["work","brand"]},
+  {id:"minimal-maintenance", title:"Low-Maintenance Fabric Bias", category:"Shopping",
+   body:"Favour fabrics that resist wrinkling and hide wear — merino wool, ponte, technical cotton blends — for anything worn on busy days. A wrinkle-prone linen shirt looks intentional at 9am and accidental by 2pm.",
+   budget:["accessible","mid"], impression:["calm","approachable"], character:["pragmatic","adventurous"], goal:["everyday","effortless"]},
+  {id:"romantic-softening", title:"Soft-Edge Formula", category:"Fit",
+   body:"To read warmer and more approachable rather than severe, soften one hard edge per outfit — a rounded collar instead of a sharp point, a knit instead of a structured jacket, a lighter shoe instead of a heavy boot.",
+   budget:["any"], impression:["approachable","calm"], character:["expressive","traditional"], goal:["everyday","brand"]},
+  {id:"power-dressing", title:"Contrast-Authority Formula", category:"Fit",
+   body:"Sharper contrast between garment colours — crisp white against dark navy, for instance — reads as more authoritative than tonal, blended combinations. Save high contrast for rooms where you want to be read as in charge.",
+   budget:["any"], impression:["authoritative","disciplined"], character:["traditional","reserved"], goal:["work","standout"]},
+  {id:"budget-phasing", title:"Three-Phase Budget Plan", category:"Budget Strategy",
+   body:"Phase one: fix fit on what you already own with a tailor, cheaply. Phase two: replace the most-worn basics with better versions. Phase three: invest in the two or three pieces that anchor the whole wardrobe. Skipping straight to phase three wastes money on pieces with nothing good to pair against yet.",
+   budget:["accessible","mid"], impression:["disciplined","calm"], character:["pragmatic"], goal:["timeless","effortless"]},
+  {id:"monochrome-authority", title:"Tonal Monochrome Statement", category:"Colour",
+   body:"Dressing head-to-toe in a single tone family, from cap to shoe, reads as unusually deliberate and elevated even when every individual piece is inexpensive. Reserve it for days you want to be remembered.",
+   budget:["any"], impression:["magnetic","authoritative"], character:["expressive","reserved"], goal:["standout","brand"]},
+  {id:"decision-fatigue", title:"Outfit Batching", category:"Wardrobe Strategy",
+   body:"Lay out a full week of outfits on a Sunday rather than deciding each morning. Removing the daily decision measurably reduces decision fatigue and, in practice, produces better-considered outfits than same-morning choices.",
+   budget:["any"], impression:["calm","disciplined"], character:["pragmatic"], goal:["effortless","everyday"]}
+];
+
+function scoreFramework(fw, ans){
+  var score = 0;
+  if(fw.budget.indexOf("any") > -1 || fw.budget.indexOf(ans.budget) > -1) score += 2;
+  if(ans.impression && fw.impression.indexOf(ans.impression) > -1) score += 3;
+  if(ans.character && fw.character.indexOf(ans.character) > -1) score += 3;
+  if(ans.goal && fw.goal.indexOf(ans.goal) > -1) score += 1;
+  return score;
+}
+
+var QUIZ = [
+  {key:"formality", q:"How formal is your day-to-day environment?", opts:[
+    {v:1,l:"Very casual, most days"},{v:2,l:"Casual, occasionally dressier"},{v:3,l:"A genuine mix"},{v:4,l:"Business casual most days"},{v:5,l:"Formal or corporate daily"}]},
+  {key:"boldness", q:"How much attention do you want your outfit to draw?", opts:[
+    {v:1,l:"Blend in completely"},{v:2,l:"Understated, mostly quiet"},{v:3,l:"Balanced"},{v:4,l:"Noticeable, on purpose"},{v:5,l:"Statement-making"}]},
+  {key:"lifestyle", q:"Which best describes your daily lifestyle?", opts:[
+    {v:"corporate",l:"Corporate / office-based"},{v:"hybrid",l:"Hybrid, mixed settings"},{v:"creative",l:"Creative or entrepreneurial"},{v:"active",l:"Active / outdoors / on the move"},{v:"social",l:"Social, lots of events"}]},
+  {key:"goal", q:"What's your main style goal right now?", opts:[
+    {v:"work",l:"Look sharper for work"},{v:"brand",l:"Build a personal brand look"},{v:"everyday",l:"Fix my everyday basics"},{v:"standout",l:"Stand out on purpose"},{v:"effortless",l:"Simplify decisions entirely"},{v:"timeless",l:"Build a wardrobe that lasts"}]},
+  {key:"budget", q:"What's your wardrobe budget range?", opts:[
+    {v:"accessible",l:"Accessible"},{v:"mid",l:"Mid-range"},{v:"premium",l:"Investment"}]},
+  {key:"impression", q:"How do you want to come across to others?", opts:[
+    {v:"authoritative",l:"Authoritative &amp; composed"},{v:"approachable",l:"Approachable &amp; warm"},{v:"creative",l:"Creative &amp; original"},{v:"disciplined",l:"Disciplined &amp; sharp"},{v:"magnetic",l:"Magnetic &amp; bold"},{v:"calm",l:"Calm &amp; grounded"}]},
+  {key:"character", q:"Which describes your natural character best?", opts:[
+    {v:"reserved",l:"Reserved, keeps things quiet"},{v:"expressive",l:"Expressive, likes being seen"},{v:"pragmatic",l:"Pragmatic, values what works"},{v:"adventurous",l:"Adventurous, seeks new things"},{v:"traditional",l:"Traditional, values what's proven"},{v:"rebellious",l:"Rebellious, resists convention"}]},
+  {key:"archetypePick", special:"archetype", q:"Which of these actually speaks to you?",
+   note:"Arbiter doesn't assign this one — your other answers will still shape your palette, fit priorities, frameworks and roadmap, but this pick is entirely yours."},
+  {key:"bodyPriority", q:"What matters most for your fit right now?", opts:[
+    {v:"shoulders",l:"Balancing my shoulders"},{v:"legs",l:"Elongating my legs"},{v:"waist",l:"Defining my waist"},{v:"structure",l:"Adding structure overall"},{v:"comfort",l:"Comfort above all"}]},
+  {key:"color", q:"Which colour direction feels most like you?", opts:[
+    {v:"neutrals",l:"Neutrals only"},{v:"earth",l:"Warm earth tones"},{v:"bold",l:"Bold, saturated colour"},{v:"mono",l:"Monochrome"},{v:"pastel",l:"Soft pastels"}]}
+];
+
+var quizIdx = 0;
+var quizAnswers = {};
+
+function buildQuiz(){
+  var container = document.getElementById("quiz-questions");
+  container.innerHTML = QUIZ.map(function(q,i){
+    if(q.special === "archetype"){
+      var cards = ARCHETYPES.map(function(a){
+        var sw = a.palette.slice(0,3).map(function(c){ return '<span style="background:'+c+'"></span>'; }).join("");
+        return '<button class="arch-choice" data-v="'+a.id+'"><span class="arch-choice-pal">'+sw+'</span><b>'+a.name+'</b><small>'+a.tagline+'</small></button>';
+      }).join("");
+      return '<div class="quiz-q" data-i="'+i+'"><div class="qnum">Question '+(i+1)+' of '+QUIZ.length+'</div><h2>'+q.q+'</h2><p class="hint" style="margin-bottom:18px;">'+q.note+'</p><div class="quiz-options arch-grid-options">'+cards+'</div></div>';
+    }
+    var opts = q.opts.map(function(o){ return '<button data-v="'+o.v+'">'+o.l+'</button>'; }).join("");
+    return '<div class="quiz-q" data-i="'+i+'"><div class="qnum">Question '+(i+1)+' of '+QUIZ.length+'</div><h2>'+q.q+'</h2><div class="quiz-options">'+opts+'</div></div>';
+  }).join("");
+
+  container.querySelectorAll(".quiz-q").forEach(function(panel, i){
+    panel.querySelectorAll(".quiz-options button").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        panel.querySelectorAll(".quiz-options button").forEach(function(b){ b.classList.remove("selected"); });
+        btn.classList.add("selected");
+        quizAnswers[QUIZ[i].key] = btn.getAttribute("data-v");
+        document.getElementById("quiz-next").disabled = false;
+        updateLivePreview();
+      });
+    });
+  });
+
+  document.getElementById("quiz-back").addEventListener("click", function(){
+    if(quizIdx > 0){ showQuizStep(quizIdx-1); }
+  });
+  document.getElementById("quiz-next").addEventListener("click", function(){
+    if(quizIdx < QUIZ.length-1){ showQuizStep(quizIdx+1); }
+    else { computeBlueprint(); }
+  });
+  document.getElementById("quiz-retake").addEventListener("click", function(){
+    quizIdx = 0; quizAnswers = {};
+    document.getElementById("report").classList.remove("active");
+    document.getElementById("quiz-wrap").classList.remove("hide");
+    document.querySelectorAll(".quiz-options button").forEach(function(b){ b.classList.remove("selected"); });
+    updateLivePreview();
+    showQuizStep(0);
+  });
+  document.getElementById("btn-export").addEventListener("click", exportBlueprint);
+
+  if(profile.blueprint){ renderReport(profile.blueprint); showReportOnly(); }
+  else { showQuizStep(0); }
+}
+
+function showReportOnly(){
+  document.getElementById("quiz-wrap").classList.add("hide");
+  document.getElementById("report").classList.add("active");
+}
+
+function showQuizStep(i){
+  quizIdx = i;
+  document.querySelectorAll(".quiz-q").forEach(function(p){ p.classList.toggle("active", parseInt(p.getAttribute("data-i"),10)===i); });
+  document.getElementById("quiz-progress-fill").style.width = Math.round(((i+1)/QUIZ.length)*100) + "%";
+  document.getElementById("quiz-back").style.visibility = i===0 ? "hidden" : "visible";
+  document.getElementById("quiz-next").textContent = i===QUIZ.length-1 ? "See my blueprint" : "Next";
+  document.getElementById("quiz-next").disabled = !quizAnswers[QUIZ[i].key];
+}
+
+function scoreArchetype(a, ans){
+  var fVal = ans.formality ? parseFloat(ans.formality) : 3;
+  var bVal = ans.boldness ? parseFloat(ans.boldness) : 3;
+  var score = 0;
+  score -= Math.abs(a.formality - fVal) * 2;
+  score -= Math.abs(a.boldness - bVal);
+  if(ans.lifestyle && a.lifestyle.indexOf(ans.lifestyle) > -1) score += 3;
+  if(ans.goal && a.goal.indexOf(ans.goal) > -1) score += 3;
+  if(ans.budget && a.budget === ans.budget) score += 2;
+  if(ans.impression && a.impression.indexOf(ans.impression) > -1) score += 2;
+  if(ans.character && a.character.indexOf(ans.character) > -1) score += 2;
+  return score;
+}
+
+function updateLivePreview(){
+  var el = document.getElementById("quiz-live-preview");
+  if(!el) return;
+  var answered = Object.keys(quizAnswers).length;
+  if(answered === 0){ el.textContent = ""; return; }
+  var fwCount = FRAMEWORK_LIBRARY.filter(function(fw){ return scoreFramework(fw, quizAnswers) > 0; }).length;
+  if(quizAnswers.archetypePick){
+    var chosen = ARCHETYPES.filter(function(a){ return a.id===quizAnswers.archetypePick; })[0];
+    el.innerHTML = "Your pick: <b>"+chosen.name+"</b>"+(fwCount ? " — "+fwCount+" framework notes shortlisted so far." : "");
+    return;
+  }
+  var scored = ARCHETYPES.map(function(a){ return {a:a, score:scoreArchetype(a, quizAnswers)}; })
+    .sort(function(x,y){ return y.score - x.score; });
+  el.innerHTML = "Based on your answers so far, styles like <b>"+scored[0].a.name+"</b> tend to fit — you'll make your own pick shortly."+(fwCount ? " "+fwCount+" framework notes shortlisted so far." : "");
+}
+
+function computeBlueprint(){
+  var primary = ARCHETYPES.filter(function(a){ return a.id===quizAnswers.archetypePick; })[0];
+  if(!primary){
+    var fallback = ARCHETYPES.map(function(a){ return {a:a, score:scoreArchetype(a, quizAnswers)}; })
+      .sort(function(x,y){ return y.score - x.score; });
+    primary = fallback[0].a;
+  }
+  var secondary = ARCHETYPES.filter(function(a){ return a.id !== primary.id; })
+    .map(function(a){ return {a:a, score:scoreArchetype(a, quizAnswers)}; })
+    .sort(function(x,y){ return y.score - x.score; })[0].a;
+
+  var frameworks = FRAMEWORK_LIBRARY.map(function(fw){ return {fw:fw, score:scoreFramework(fw, quizAnswers)}; })
+    .sort(function(x,y){ return y.score - x.score; })
+    .slice(0, 6)
+    .map(function(x){ return x.fw.id; });
+
+  var bp = {
+    primaryId: primary.id, secondaryId: secondary.id,
+    formality: parseFloat(quizAnswers.formality), boldness: parseFloat(quizAnswers.boldness),
+    bodyPriority: quizAnswers.bodyPriority, color: quizAnswers.color,
+    goal: quizAnswers.goal, lifestyle: quizAnswers.lifestyle, budget: quizAnswers.budget,
+    impression: quizAnswers.impression, character: quizAnswers.character,
+    frameworkIds: frameworks
+  };
+  profile.blueprint = bp;
+  saveProfile(profile);
+  renderReport(bp);
+  showReportOnly();
+}
+
+var ROADMAP_BY_BUDGET = {
+  accessible:["Fix fit on what you already own — a $15 tailor adjustment beats a $150 new purchase.","Replace the two most-worn basics with slightly better versions in your archetype's palette.","Fill any capsule gaps from Module II with accessible-tier pieces, one category at a time."],
+  mid:["Take your five most-worn pieces to a tailor and fix anything that doesn't sit right.","Replace ageing basics with mid-range versions built to last, prioritising fabric over logo.","Invest in one signature piece from your primary archetype's shopping guide to anchor the wardrobe."],
+  premium:["Book a standing relationship with one tailor rather than shopping around each time.","Commission or buy the two or three foundational pieces — coat, suit, leather goods — that anchor everything else.","Round out the capsule with supporting basics, spending only where cost-per-wear justifies it."]
+};
+
+function buildBlueprintText(bp){
+  var primary = ARCHETYPES.filter(function(a){ return a.id===bp.primaryId; })[0];
+  var secondary = ARCHETYPES.filter(function(a){ return a.id===bp.secondaryId; })[0];
+  var lines = [];
+  lines.push("STYLE BLUEPRINT — " + (profile.name || "You"));
+  lines.push("Prepared by Arbiter, The Modern Style Manual");
+  lines.push("");
+  lines.push("YOUR CHOICE: " + primary.roman + ". " + primary.name);
+  lines.push(primary.tagline);
+  lines.push("");
+  lines.push("SECONDARY INFLUENCE: " + secondary.roman + ". " + secondary.name);
+  lines.push("");
+  lines.push("Formality: " + Math.round(bp.formality) + " / 5    Boldness: " + Math.round(bp.boldness) + " / 5");
+  lines.push("Palette: " + primary.palette.join(", "));
+  lines.push("");
+  lines.push("FIT PRIORITY");
+  lines.push("- " + (FIT_TIPS[bp.bodyPriority] || ""));
+  lines.push("");
+  lines.push("THREE FORMULAS TO START WITH");
+  primary.templates.forEach(function(t){ lines.push("- " + t); });
+  lines.push("");
+  lines.push("ARBITER'S FRAMEWORK PICKS");
+  (bp.frameworkIds || []).forEach(function(id){
+    var fw = FRAMEWORK_LIBRARY.filter(function(f){ return f.id===id; })[0];
+    if(fw){ lines.push("* " + fw.title + " (" + fw.category + ")"); lines.push("  " + fw.body); }
+  });
+  lines.push("");
+  lines.push("YOUR 90-DAY ROADMAP");
+  var steps = ROADMAP_BY_BUDGET[bp.budget] || ROADMAP_BY_BUDGET.mid;
+  var labels = ["Days 1-30","Days 31-60","Days 61-90"];
+  steps.forEach(function(s,i){ lines.push(labels[i] + ": " + s); });
+  lines.push("");
+  lines.push("Go deeper on " + primary.name + " in The Codex, and build your capsule in The Framework.");
+  return lines.join("\n");
+}
+
+async function exportBlueprint(){
+  var bp = profile.blueprint;
+  if(!bp) return;
+  var status = document.getElementById("export-status");
+  var text = buildBlueprintText(bp);
+  var safeName = (profile.name || "you").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"") || "you";
+  var filename = "style-blueprint-" + safeName + ".md";
+
+  var downloads = null;
+  try{
+    if(window.claude && window.claude.use){ downloads = await window.claude.use("downloads"); }
+  }catch(e){ downloads = null; }
+
+  if(!downloads){
+    window.print();
+    return;
+  }
+  if(status) status.textContent = "Preparing export…";
+  try{
+    await downloads.save({filename: filename, data: text});
+    if(status) status.textContent = "Exported.";
+  }catch(e){
+    if(status) status.textContent = (e && e.code === "declined") ? "" : "Export unavailable right now.";
+  }
+}
+
+function renderReport(bp){
+  var primary = ARCHETYPES.filter(function(a){ return a.id===bp.primaryId; })[0];
+  var secondary = ARCHETYPES.filter(function(a){ return a.id===bp.secondaryId; })[0];
+
+  document.getElementById("report-name").textContent = profile.name || "You";
+  document.getElementById("report-tagline").textContent = primary.tagline;
+  document.getElementById("report-primary").textContent = primary.roman + ". " + primary.name;
+  document.getElementById("report-primary-why").textContent = "This is the style you chose yourself. Arbiter tuned everything below it — palette, fit priorities, frameworks and roadmap — to your other answers. Read the full entry in The Codex for its rules and shopping guide.";
+  document.getElementById("report-secondary").textContent = secondary.roman + ". " + secondary.name;
+
+  document.getElementById("m-formality-label").textContent = Math.round(bp.formality) + " / 5";
+  document.getElementById("m-boldness-label").textContent = Math.round(bp.boldness) + " / 5";
+  document.getElementById("m-formality").style.width = (bp.formality/5*100) + "%";
+  document.getElementById("m-boldness").style.width = (bp.boldness/5*100) + "%";
+
+  document.getElementById("report-palette").innerHTML = primary.palette.map(function(c){
+    return '<div class="swatch" style="background:'+c+'"></div>';
+  }).join("");
+
+  var fitTip = FIT_TIPS[bp.bodyPriority] || "";
+  var colorNote = {
+    neutrals:"Stay within your primary archetype's neutral tones for nearly everything.",
+    earth:"Lean into the warmer end of your primary archetype's palette.",
+    bold:"Use one bold piece per outfit against your archetype's neutrals.",
+    mono:"Pick one tone from the palette and build full outfits within its shades.",
+    pastel:"Soften your archetype's palette with lighter, higher-value versions of the same hues."
+  }[bp.color] || "";
+  document.getElementById("report-fit").innerHTML = "<li>"+fitTip+"</li><li>"+colorNote+"</li>";
+
+  document.getElementById("report-formulas").innerHTML = primary.templates.map(function(t){ return "<li>"+t+"</li>"; }).join("");
+
+  var fwEl = document.getElementById("report-frameworks");
+  if(fwEl){
+    var chosen = (bp.frameworkIds || []).map(function(id){ return FRAMEWORK_LIBRARY.filter(function(f){ return f.id===id; })[0]; }).filter(Boolean);
+    fwEl.innerHTML = chosen.map(function(fw){
+      return '<div class="fw-card"><span class="fw-cat">'+fw.category+'</span><h5>'+fw.title+'</h5><p>'+fw.body+'</p></div>';
+    }).join("");
+  }
+  var roadEl = document.getElementById("report-roadmap");
+  if(roadEl){
+    var steps = ROADMAP_BY_BUDGET[bp.budget] || ROADMAP_BY_BUDGET.mid;
+    var labels = ["Days 1–30","Days 31–60","Days 61–90"];
+    roadEl.innerHTML = steps.map(function(s,i){ return '<div class="road-step"><span>'+labels[i]+'</span><p>'+s+'</p></div>'; }).join("");
+  }
+}
+
+/* ---------------- Journey dashboard ---------------- */
+function renderJourney(){
+  var el = document.getElementById("journey-rows");
+  if(!el) return;
+  var viewedCount = profile.codexViewed ? Object.keys(profile.codexViewed).filter(function(k){ return profile.codexViewed[k]; }).length : 0;
+  var capsuleTotal = 0, capsuleDone = 0;
+  Object.keys(CAPSULE).forEach(function(cat){ capsuleTotal += CAPSULE[cat].length; });
+  if(profile.capsule){ Object.keys(profile.capsule).forEach(function(k){ if(profile.capsule[k]) capsuleDone++; }); }
+  var bpDone = !!profile.blueprint;
+  var bpLabel = bpDone ? "Complete — " + (ARCHETYPES.filter(function(a){ return a.id===profile.blueprint.primaryId; })[0] || {}).name : "Not started";
+  var bpPct = bpDone ? 100 : 0;
+
+  var rows = [
+    {label:"Codex chapters read", value:viewedCount+" / "+ARCHETYPES.length, pct: Math.round(viewedCount/ARCHETYPES.length*100)},
+    {label:"Capsule wardrobe built", value:capsuleDone+" / "+capsuleTotal, pct: Math.round(capsuleDone/capsuleTotal*100)},
+    {label:"Arbiter blueprint", value:bpLabel, pct:bpPct}
+  ];
+  el.innerHTML = rows.map(function(r){
+    return '<div class="journey-row"><label><span>'+r.label+'</span><b>'+r.value+'</b></label><div class="journey-bar"><div class="journey-bar-fill" style="width:'+r.pct+'%"></div></div></div>';
+  }).join("");
+}
+
+/* ---------------- Glossary ---------------- */
+var GLOSSARY = [
+  {t:"Break", d:"Where trouser fabric folds at the shoe. No break sits clean above it; a full break pools slightly at the ankle."},
+  {t:"Drape", d:"How fabric hangs and moves on the body. Heavier, higher-quality wool drapes cleanly instead of clinging or creasing."},
+  {t:"Gorge", d:"The seam where a jacket's collar meets its lapel. A higher gorge reads more modern; a lower gorge reads more classic."},
+  {t:"Half-canvas", d:"A jacket construction with canvas stitched through the chest and fused below — a middle ground in price and drape."},
+  {t:"Full-canvas", d:"The highest jacket construction, with canvas floating freely inside the front panel. Moulds to the body over time."},
+  {t:"Fused", d:"A jacket construction where interlining is glued rather than stitched to the fabric. Cheapest to produce, but can bubble over years."},
+  {t:"Patina", d:"The visible wear a natural material develops with age, especially leather. A feature, not a flaw, in classic and old-money style."},
+  {t:"Rise", d:"The distance from crotch seam to waistband on trousers. High-rise sits at the natural waist; low-rise sits below it."},
+  {t:"Inseam", d:"The trouser measurement from crotch seam to hem — the number that actually determines trouser length, not the waist size."},
+  {t:"Silhouette", d:"The overall shape an outfit creates, independent of colour or fabric. The first thing the eye reads before any detail registers."},
+  {t:"Selvedge", d:"A tightly woven, self-finished fabric edge, most associated with premium denim — a signal of higher-quality weaving."},
+  {t:"Ponte", d:"A knit fabric with the stretch of jersey and the structure of a woven. Common in low-maintenance trousers and blazers."},
+  {t:"Melange", d:"A fabric woven from differently coloured fibres twisted together, giving a flecked, heathered look rather than a flat colour."},
+  {t:"Bespoke", d:"A garment individually patterned and cut from scratch for one person — the highest, most expensive level of tailoring."},
+  {t:"Made-to-measure", d:"A garment built from an existing pattern block adjusted to your measurements. Faster and cheaper than bespoke."},
+  {t:"Off-the-rack", d:"Any garment made to standard sizing without individual adjustment — most retail clothing, before a tailor gets involved."},
+  {t:"Notch lapel", d:"The most common jacket lapel, with a small triangular notch. Reads as versatile and slightly less formal than a peak lapel."},
+  {t:"Peak lapel", d:"A lapel that points upward toward the shoulder. Reads more formal and more assertive than a notch lapel."},
+  {t:"Shawl collar", d:"A rounded, seamless lapel with no notch at all — traditionally reserved for the most formal evening wear."},
+  {t:"Point collar", d:"A classic shirt collar with straight, moderately spread points — the most versatile shirt collar for tie or no-tie wear."},
+  {t:"Placket", d:"The reinforced strip of fabric a shirt's buttons and buttonholes are sewn onto. A hidden placket conceals the buttons entirely."},
+  {t:"Yoke", d:"The panel of fabric across a shirt's upper back and shoulders. A well-cut yoke lets the shoulder seam sit exactly where it should."},
+  {t:"Gusset", d:"A small reinforcing piece of fabric added at a stress point, commonly underarms, to stop seams tearing under movement."},
+  {t:"Hand (fabric)", d:"How a fabric feels to the touch: soft, crisp, dry, slick. A major factor in perceived quality unrelated to appearance."},
+  {t:"Slub", d:"An intentional irregularity in yarn thickness that gives fabric a slightly textured, uneven surface. Common in linen and raw denim."},
+  {t:"Tonal", d:"An outfit built from different shades of a single colour family rather than one flat colour — reads as more considered."},
+  {t:"Monochrome", d:"An outfit in one colour, head to toe, including footwear — the most deliberate-reading colour choice in the Codex."},
+  {t:"Capsule wardrobe", d:"A deliberately small set of pieces chosen so every item combines with every other item — the foundation of Module II."},
+  {t:"Cost-per-wear", d:"Purchase price divided by realistic number of times worn — the metric behind Arbiter's budgeting framework."},
+  {t:"Quiet luxury", d:"Style built on fabric quality and fit rather than visible branding — the governing principle behind the Old Money archetype."}
+];
+
+function buildGlossary(){
+  var list = document.getElementById("glossary-list");
+  var empty = document.getElementById("glossary-empty");
+  var search = document.getElementById("glossary-search");
+
+  function render(filter){
+    var f = (filter || "").trim().toLowerCase();
+    var matches = GLOSSARY.filter(function(g){
+      return !f || g.t.toLowerCase().indexOf(f) > -1 || g.d.toLowerCase().indexOf(f) > -1;
+    });
+    empty.classList.toggle("hide", matches.length > 0);
+    list.innerHTML = matches.map(function(g){
+      var title = g.t, body = g.d;
+      if(f){
+        var reT = new RegExp("("+f.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig");
+        title = title.replace(reT, "<mark>$1</mark>");
+        body = body.replace(reT, "<mark>$1</mark>");
+      }
+      return '<div class="glossary-term"><h4>'+title+'</h4><p>'+body+'</p></div>';
+    }).join("");
+  }
+  search.addEventListener("input", function(){ render(search.value); });
+  render("");
+}
+
+/* ---------------- Init ---------------- */
+if(profile && profile.name && profile.goal && profile.budget && profile.tone){
+  landing.classList.add("hide");
+  bootApp();
+}
+})();
+</script>
+</body>
+</html>
